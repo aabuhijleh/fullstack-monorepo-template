@@ -1,36 +1,57 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@workspace/ui/components/button"
 import { api } from "@/lib/api"
 
 export const Route = createFileRoute("/")({ component: App })
 
 function App() {
-  const [counter, setCounter] = useState<number | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [email, setEmail] = useState("admin@example.com")
+  const [password, setPassword] = useState("password")
+  const [userEmail, setUserEmail] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const visit = async () => {
+  useEffect(() => {
+    api.protected.me
+      .$get()
+      .then(async (res) => {
+        if (res.ok) {
+          const data = await res.json()
+          setUserEmail(data.email)
+          setLoggedIn(true)
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  const login = async () => {
     setError(null)
     try {
-      const res = await api.index.$get()
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = await res.json()
-      setCounter(data.counter)
+      const res = await api.auth.login.$post({
+        json: { email, password },
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error("error" in data ? data.error : `HTTP ${res.status}`)
+      }
+      setLoggedIn(true)
+      const meRes = await api.protected.me.$get()
+      if (meRes.ok) {
+        const meData = await meRes.json()
+        setUserEmail(meData.email)
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e))
     }
   }
 
-  const read = async () => {
-    setError(null)
-    try {
-      const res = await api.read.$get()
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = await res.json()
-      setCounter(data.counter)
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
-    }
+  const logout = async () => {
+    await api.auth.logout.$post()
+    setLoggedIn(false)
+    setUserEmail(null)
   }
 
   return (
@@ -39,19 +60,39 @@ function App() {
         <div>
           <h1 className="font-medium">Project ready!</h1>
           <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-2">
-            <Button className="w-fit" onClick={visit}>
-              Visit (increments)
-            </Button>
-            <Button className="w-fit" variant="secondary" onClick={read}>
-              Read
-            </Button>
-          </div>
-          {counter !== null && <p>Counter: {counter}</p>}
+        <div className="flex flex-col gap-3">
+          <h2 className="font-medium">Authentication</h2>
+          {loading ? (
+            <p>Loading...</p>
+          ) : !loggedIn ? (
+            <>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="rounded-md border px-3 py-2 text-sm"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="rounded-md border px-3 py-2 text-sm"
+              />
+              <Button className="w-fit" onClick={login}>
+                Log in
+              </Button>
+            </>
+          ) : (
+            <>
+              <p>Logged in as {userEmail}</p>
+              <Button className="w-fit" variant="secondary" onClick={logout}>
+                Log out
+              </Button>
+            </>
+          )}
           {error && <p className="text-red-600">Error: {error}</p>}
         </div>
       </div>

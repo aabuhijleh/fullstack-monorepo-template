@@ -1,9 +1,11 @@
 import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Platform, Pressable, StyleSheet, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AnimatedIcon } from '@/components/animated-icon';
 import { HintRow } from '@/components/hint-row';
+import { api, clearTokens, loadTokens, saveTokens } from '@/lib/api';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
@@ -29,6 +31,69 @@ function getDevMenuHint() {
 }
 
 export default function HomeScreen() {
+  const [loading, setLoading] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [email, setEmail] = useState('admin@example.com');
+  const [password, setPassword] = useState('password');
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadTokens().then(async (hasTokens) => {
+      if (hasTokens) {
+        try {
+          const res = await api.protected.me.$get();
+          if (res.ok) {
+            const data = await res.json();
+            setUserEmail(data.email);
+            setLoggedIn(true);
+          } else {
+            await clearTokens();
+          }
+        } catch {
+          await clearTokens();
+        }
+      }
+      setLoading(false);
+    });
+  }, []);
+
+  const login = async () => {
+    setError(null);
+    try {
+      const res = await api.auth.login.$post({
+        json: { email, password },
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error('error' in data ? data.error : `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      await saveTokens(data.accessToken, data.refreshToken);
+      setLoggedIn(true);
+      fetchMe();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  };
+
+  const fetchMe = async () => {
+    try {
+      const res = await api.protected.me.$get();
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setUserEmail(data.email);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  };
+
+  const logout = async () => {
+    await clearTokens();
+    setLoggedIn(false);
+    setUserEmail(null);
+  };
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
@@ -53,6 +118,48 @@ export default function HomeScreen() {
             title="Fresh start"
             hint={<ThemedText type="code">npm run reset-project</ThemedText>}
           />
+        </ThemedView>
+
+        <ThemedView type="backgroundElement" style={styles.stepContainer}>
+          <ThemedText type="smallBold">Authentication</ThemedText>
+          {loading ? (
+            <ThemedText type="small">Loading...</ThemedText>
+          ) : !loggedIn ? (
+            <>
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                placeholderTextColor="#999"
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                keyboardType="email-address"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                placeholderTextColor="#999"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+              />
+              <Pressable style={styles.button} onPress={login}>
+                <ThemedText type="small" themeColor="text">
+                  Log in
+                </ThemedText>
+              </Pressable>
+            </>
+          ) : loggedIn ? (
+            <>
+              {userEmail && <ThemedText>Logged in as {userEmail}</ThemedText>}
+              <Pressable style={[styles.button, styles.buttonSecondary]} onPress={logout}>
+                <ThemedText type="small" themeColor="text">
+                  Log out
+                </ThemedText>
+              </Pressable>
+            </>
+          ) : null}
+          {error && <ThemedText style={styles.error}>Error: {error}</ThemedText>}
         </ThemedView>
 
         {Platform.OS === 'web' && <WebBadge />}
@@ -94,5 +201,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.three,
     paddingVertical: Spacing.four,
     borderRadius: Spacing.four,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: Spacing.two,
+  },
+  button: {
+    paddingHorizontal: Spacing.three,
+    paddingVertical: Spacing.two,
+    borderRadius: Spacing.two,
+    backgroundColor: '#3c87f7',
+  },
+  buttonSecondary: {
+    backgroundColor: '#6b7280',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: Spacing.two,
+    paddingHorizontal: Spacing.three,
+    paddingVertical: Spacing.two,
+    fontSize: 14,
+    color: '#111',
+    backgroundColor: '#fff',
+  },
+  error: {
+    color: '#ef4444',
   },
 });

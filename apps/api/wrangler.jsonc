@@ -5,9 +5,9 @@
   "compatibility_date": "2026-05-25",
   "vars": {
     "WEB_ORIGIN": "http://localhost:3000",
-    "SESSION_ENCRYPTION_KEY": "dev_only_replace_with_secret_min_32_chars"
+    "JWT_SECRET": "dev_only_replace_with_secret_min_32_chars"
   }
-  // For production, set the real key via `wrangler secret put SESSION_ENCRYPTION_KEY`.
+  // For production, set the real key via `wrangler secret put JWT_SECRET`.
   // "compatibility_flags": [
   //   "nodejs_compat"
   // ],
