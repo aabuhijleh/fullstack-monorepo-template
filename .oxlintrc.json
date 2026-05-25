@@ -1,0 +1,66 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": [
+    "*.gen.ts",
+    "**/_generated/**",
+    "**/.agents/**",
+    "**/.claude/**",
+    "apps/mobile/src/uniwind-types.d.ts",
+    "packages/ui/src/**/*"
+  ],
+  "plugins": ["eslint", "typescript", "unicorn", "oxc", "react"],
+  "jsPlugins": [{ "name": "react-hooks-js", "specifier": "eslint-plugin-react-hooks" }],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "rules": {
+    "no-underscore-dangle": ["warn", { "allow": ["_id", "_creationTime"] }],
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["../**/*"],
+            "message": "Use absolute imports (~/) for paths nested more than one directory."
+          }
+        ]
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react-hooks-js/config": "warn",
+    "react-hooks-js/error-boundaries": "warn",
+    "react-hooks-js/gating": "warn",
+    "react-hooks-js/globals": "warn",
+    "react-hooks-js/immutability": "warn",
+    "react-hooks-js/incompatible-library": "warn",
+    "react-hooks-js/preserve-manual-memoization": "warn",
+    "react-hooks-js/purity": "warn",
+    "react-hooks-js/refs": "warn",
+    "react-hooks-js/set-state-in-effect": "warn",
+    "react-hooks-js/set-state-in-render": "warn",
+    "react-hooks-js/static-components": "warn",
+    "react-hooks-js/unsupported-syntax": "warn",
+    "react-hooks-js/use-memo": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["apps/mobile/**"],
+      "rules": {
+        "react/style-prop-object": "off"
+      }
+    },
+    {
+      "files": ["packages/backend/**"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "options": {
+    "typeAware": true,
+    "typeCheck": true,
+    "reportUnusedDisableDirectives": "warn"
+  }
+}

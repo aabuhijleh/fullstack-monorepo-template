@@ -1,0 +1,39 @@
+{
+  "files.watcherExclude": {
+    "**/_generated/**/*": true,
+    "**/routeTree.gen.ts": true
+  },
+  "search.exclude": {
+    "**/_generated/**/*": true,
+    "**/routeTree.gen.ts": true,
+    "**/CLAUDE.md": true,
+    "**/.claude/**": true,
+    "**/.agents/**": true
+  },
+  "files.readonlyInclude": {
+    "**/_generated/**/*": true,
+    "**/routeTree.gen.ts": true,
+    "bun.lock": true
+  },
+
+  "oxc.fmt.configPath": ".oxfmtrc.json",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "always"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+
+  "tailwindCSS.experimental.configFile": "./packages/ui/src/styles/globals.css",
+  "tailwindCSS.classFunctions": ["cn", "cva", "class", "className", "headerClassName"],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  "typescript.native-preview.tsdk": "./node_modules/@typescript/native-preview",
+  "typescript.experimental.useTsgo": true,
+
+  "eslint.enable": false
+}

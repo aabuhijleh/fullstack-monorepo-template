@@ -1,0 +1,33 @@
+{
+  "name": "@workspace/backend",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./api": "./convex/_generated/api.ts",
+    "./dataModel": "./convex/_generated/dataModel.ts",
+    "./validators": "./convex/lib/validators.ts",
+    "./testing": "./convex/lib/testing.ts"
+  },
+  "scripts": {
+    "dev": "convex dev",
+    "dashboard": "convex dashboard",
+    "test": "vitest run --passWithNoTests",
+    "clean": "bun exec \"rm -rf .turbo node_modules\""
+  },
+  "dependencies": {
+    "@auth/core": "0.37.0",
+    "@convex-dev/auth": "^0.0.92",
+    "@oslojs/crypto": "^1.0.1",
+    "convex": "^1.39.1",
+    "convex-helpers": "^0.1.118",
+    "resend": "^6.12.4",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@edge-runtime/vm": "^5.0.0",
+    "@types/bun": "latest",
+    "convex-test": "^0.0.53",
+    "typescript": "~6.0.3",
+    "vitest": "^4"
+  }
+}

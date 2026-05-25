@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "expo.vscode-expo-tools",
+    "bradlc.vscode-tailwindcss",
+    "TypeScriptTeam.native-preview"
+  ]
+}

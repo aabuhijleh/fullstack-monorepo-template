@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Tasklit",
+    "slug": "mobile",
+    "scheme": "mobile",
+    "version": "1.0.0",
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "experiments": {
+      "tsconfigPaths": true,
+      "reactCompiler": true
+    },
+    "plugins": ["expo-secure-store", "expo-router"],
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.aabuhijleh.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.aabuhijleh.mobile"
+    }
+  }
+}
