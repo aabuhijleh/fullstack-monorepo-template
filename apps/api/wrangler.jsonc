@@ -1,0 +1,40 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-25",
+  "vars": {
+    "WEB_ORIGIN": "http://localhost:3000",
+    "SESSION_ENCRYPTION_KEY": "dev_only_replace_with_secret_min_32_chars"
+  }
+  // For production, set the real key via `wrangler secret put SESSION_ENCRYPTION_KEY`.
+  // "compatibility_flags": [
+  //   "nodejs_compat"
+  // ],
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "MY_KV_NAMESPACE",
+  //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  //   }
+  // ],
+  // "r2_buckets": [
+  //   {
+  //     "binding": "MY_BUCKET",
+  //     "bucket_name": "my-bucket"
+  //   }
+  // ],
+  // "d1_databases": [
+  //   {
+  //     "binding": "MY_DB",
+  //     "database_name": "my-database",
+  //     "database_id": ""
+  //   }
+  // ],
+  // "ai": {
+  //   "binding": "AI"
+  // },
+  // "observability": {
+  //   "enabled": true,
+  //   "head_sampling_rate": 1
+  // }
+}
