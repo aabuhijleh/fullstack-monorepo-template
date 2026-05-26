@@ -5,6 +5,8 @@
   "dependencies": {
     "@expo/ui": "~56.0.13",
     "@workspace/api-client": "workspace:*",
+    "@workspace/backend": "workspace:*",
+    "convex": "^1.39.1",
     "expo": "~56.0.4",
     "expo-constants": "~56.0.15",
     "expo-dev-client": "~56.0.15",
