@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "dependencies": {
     "@expo/ui": "~56.0.14",
-    "@workspace/api-client": "workspace:*",
     "@workspace/backend": "workspace:*",
     "convex": "^1.39.1",
     "expo": "~56.0.5",
