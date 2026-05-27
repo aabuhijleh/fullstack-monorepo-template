@@ -2,9 +2,17 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { convexQuery } from "@convex-dev/react-query"
 import { api } from "@workspace/backend/api"
+import { Authenticated, Unauthenticated } from "convex/react"
 
 export const Route = createFileRoute("/tasks")({
-  component: RouteComponent,
+  component: () => (
+    <>
+      <Authenticated>
+        <RouteComponent />
+      </Authenticated>
+      <Unauthenticated>You are not authenticated</Unauthenticated>
+    </>
+  ),
 })
 
 function RouteComponent() {
