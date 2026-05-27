@@ -4,11 +4,21 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router"
 import appCss from "@workspace/ui/globals.css?url"
+import { getAuthToken } from "../lib/convex-auth-cookies"
 import type { QueryClient } from "@tanstack/react-query"
+import type { ConvexQueryClient } from "@convex-dev/react-query"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
+  convexQueryClient: ConvexQueryClient
 }>()({
+  beforeLoad: async ({ context }) => {
+    const token = await getAuthToken()
+    if (token) {
+      context.convexQueryClient.serverHttpClient?.setAuth(token)
+    }
+    return { token }
+  },
   head: () => ({
     meta: [
       {

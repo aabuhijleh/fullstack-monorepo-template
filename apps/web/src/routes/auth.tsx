@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useAuthActions } from "@convex-dev/auth/react"
-import { useConvexAuth } from "convex/react"
 
 export const Route = createFileRoute("/auth")({
   component: RouteComponent,
@@ -9,14 +8,16 @@ export const Route = createFileRoute("/auth")({
 
 function RouteComponent() {
   const { signIn, signOut } = useAuthActions()
-  const { isAuthenticated } = useConvexAuth()
+  const { token } = Route.useRouteContext()
   const [step, setStep] = useState<"email" | { email: string }>("email")
 
-  if (isAuthenticated) {
+  if (token) {
     return (
       <div>
         <p>You are logged in</p>
-        <button onClick={() => signOut()}>Log out</button>
+        <button onClick={() => signOut().then(() => window.location.reload())}>
+          Log out
+        </button>
       </div>
     )
   }
@@ -44,6 +45,7 @@ function RouteComponent() {
         event.preventDefault()
         const formData = new FormData(event.currentTarget)
         await signIn("resend-otp", formData)
+        window.location.reload()
       }}
     >
       <p>Enter the code sent to {step.email}</p>

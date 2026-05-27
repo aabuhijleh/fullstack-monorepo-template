@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TasksTestRouteImport } from './routes/tasks-test'
 import { Route as TasksRouteImport } from './routes/tasks'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TasksTestRoute = TasksTestRouteImport.update({
+  id: '/tasks-test',
+  path: '/tasks-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TasksRoute = TasksRouteImport.update({
   id: '/tasks',
   path: '/tasks',
@@ -33,34 +39,45 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/tasks': typeof TasksRoute
+  '/tasks-test': typeof TasksTestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/tasks': typeof TasksRoute
+  '/tasks-test': typeof TasksTestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/tasks': typeof TasksRoute
+  '/tasks-test': typeof TasksTestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/tasks'
+  fullPaths: '/' | '/auth' | '/tasks' | '/tasks-test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/tasks'
-  id: '__root__' | '/' | '/auth' | '/tasks'
+  to: '/' | '/auth' | '/tasks' | '/tasks-test'
+  id: '__root__' | '/' | '/auth' | '/tasks' | '/tasks-test'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   TasksRoute: typeof TasksRoute
+  TasksTestRoute: typeof TasksTestRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tasks-test': {
+      id: '/tasks-test'
+      path: '/tasks-test'
+      fullPath: '/tasks-test'
+      preLoaderRoute: typeof TasksTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tasks': {
       id: '/tasks'
       path: '/tasks'
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   TasksRoute: TasksRoute,
+  TasksTestRoute: TasksTestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

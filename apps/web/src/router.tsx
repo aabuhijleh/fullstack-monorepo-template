@@ -4,6 +4,9 @@ import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query
 import { ConvexQueryClient } from "@convex-dev/react-query"
 import { ConvexAuthProvider } from "@convex-dev/auth/react"
 import { routeTree } from "./routeTree.gen"
+import { createCookieSyncStorage } from "./lib/convex-auth-cookies"
+
+const isServer = typeof window === "undefined"
 
 export function getRouter() {
   const CONVEX_URL = (import.meta as any).env.VITE_CONVEX_URL!
@@ -24,12 +27,15 @@ export function getRouter() {
 
   const router = createRouter({
     routeTree,
-    context: { queryClient },
+    context: { queryClient, convexQueryClient },
     scrollRestoration: true,
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
     Wrap: ({ children }) => (
-      <ConvexAuthProvider client={convexQueryClient.convexClient}>
+      <ConvexAuthProvider
+        client={convexQueryClient.convexClient}
+        storage={isServer ? undefined : createCookieSyncStorage()}
+      >
         {children}
       </ConvexAuthProvider>
     ),
