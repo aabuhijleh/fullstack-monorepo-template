@@ -27,7 +27,8 @@ function RouteComponent() {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
           await signIn("resend-otp", formData);
-          setStep({ email: formData.get("email") as string });
+          const email = formData.get("email");
+          setStep({ email: typeof email === "string" ? email : "" });
         }}
       >
         <p>Enter your email to sign in</p>

@@ -8,5 +8,3 @@ pre-commit:
     format:
       run: bunx oxfmt --no-error-on-unmatched-pattern {staged_files}
       stage_fixed: true
-    typecheck:
-      run: bun run typecheck

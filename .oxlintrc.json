@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "ignorePatterns": ["*.gen.ts", "**/convex/_generated/**", "**/.claude/**", "**/.agents/**"],
+  "ignorePatterns": ["*.gen.ts", "**/_generated/**", "**/.agents/**", "**/.claude/**"],
   "plugins": ["eslint", "typescript", "unicorn", "oxc", "react"],
   "categories": {
     "correctness": "warn",
@@ -9,5 +9,10 @@
   },
   "rules": {
     "react/react-in-jsx-scope": "off"
+  },
+  "options": {
+    "typeAware": true,
+    "typeCheck": true,
+    "reportUnusedDisableDirectives": "warn"
   }
 }

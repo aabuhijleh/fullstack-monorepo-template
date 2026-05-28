@@ -10,7 +10,12 @@ const MIN_REQUIRED_LIFETIME_MS = 10_000;
 function decodeJwtPayload(token: string) {
   try {
     const payload = token.split(".")[1];
-    return JSON.parse(atob(payload)) as { exp?: number; iat?: number };
+    const parsed: unknown = JSON.parse(atob(payload));
+    if (typeof parsed !== "object" || parsed === null) return null;
+    return {
+      exp: "exp" in parsed && typeof parsed.exp === "number" ? parsed.exp : undefined,
+      iat: "iat" in parsed && typeof parsed.iat === "number" ? parsed.iat : undefined,
+    };
   } catch {
     return null;
   }

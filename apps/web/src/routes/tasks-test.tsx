@@ -10,7 +10,7 @@ export const Route = createFileRoute("/tasks-test")({
     }
   },
   loader: ({ context }) => {
-    context.queryClient.prefetchQuery(convexQuery(api.tasks.get, {}));
+    void context.queryClient.prefetchQuery(convexQuery(api.tasks.get, {}));
   },
   component: RouteComponent,
 });

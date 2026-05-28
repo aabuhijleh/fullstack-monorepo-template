@@ -9,9 +9,7 @@
     "./components/*": "./src/components/*.tsx",
     "./hooks/*": "./src/hooks/*.ts"
   },
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  },
+  "scripts": {},
   "dependencies": {
     "@base-ui/react": "^1.5.0",
     "@fontsource-variable/ibm-plex-sans": "^5.2.8",
@@ -31,7 +29,7 @@
     "@types/node": "^25.1.0",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
-    "tailwindcss": "^4.1.18",
-    "typescript": "~6.0.3"
+    "@typescript/native-preview": "beta",
+    "tailwindcss": "^4.1.18"
   }
 }
