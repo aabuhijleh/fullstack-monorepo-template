@@ -1,18 +1,18 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { api } from "@workspace/backend/api";
-import { Authenticated, Unauthenticated } from "convex/react";
 
 export const Route = createFileRoute("/tasks")({
-  component: () => (
-    <>
-      <Authenticated>
-        <RouteComponent />
-      </Authenticated>
-      <Unauthenticated>You are not authenticated</Unauthenticated>
-    </>
-  ),
+  beforeLoad: ({ context }) => {
+    if (!context.token) {
+      throw redirect({ to: "/auth" });
+    }
+  },
+  loader: ({ context }) => {
+    void context.queryClient.prefetchQuery(convexQuery(api.tasks.get, {}));
+  },
+  component: RouteComponent,
 });
 
 function RouteComponent() {
