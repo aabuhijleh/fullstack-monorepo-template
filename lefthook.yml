@@ -2,14 +2,11 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      glob: "*.{js,ts,jsx,tsx}"
+      glob: "*.{js,jsx,ts,tsx,mjs,cjs}"
       run: bunx oxlint {staged_files}
+      stage_fixed: true
     format:
-      glob: "*.{js,ts,jsx,tsx,json,css,md,yaml,yml}"
-      run: bunx oxfmt --check {staged_files}
-    typecheck-web:
-      root: "apps/web/"
-      run: bunx tsc --noEmit
-    typecheck-ui:
-      root: "packages/ui/"
-      run: bunx tsc --noEmit
+      run: bunx oxfmt --no-error-on-unmatched-pattern {staged_files}
+      stage_fixed: true
+    typecheck:
+      run: bun run typecheck

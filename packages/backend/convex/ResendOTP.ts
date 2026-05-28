@@ -1,6 +1,6 @@
-import { Email } from "@convex-dev/auth/providers/Email"
-import { type RandomReader, generateRandomString } from "@oslojs/crypto/random"
-import { Resend as ResendAPI } from "resend"
+import { Email } from "@convex-dev/auth/providers/Email";
+import { type RandomReader, generateRandomString } from "@oslojs/crypto/random";
+import { Resend as ResendAPI } from "resend";
 
 export const ResendOTP = Email({
   id: "resend-otp",
@@ -9,21 +9,21 @@ export const ResendOTP = Email({
   async generateVerificationToken() {
     const random: RandomReader = {
       read(bytes: Uint8Array<ArrayBuffer>) {
-        crypto.getRandomValues(bytes)
+        crypto.getRandomValues(bytes);
       },
-    }
-    return generateRandomString(random, "0123456789", 8)
+    };
+    return generateRandomString(random, "0123456789", 8);
   },
   async sendVerificationRequest({ identifier: email, provider, token }) {
-    const resend = new ResendAPI(provider.apiKey)
+    const resend = new ResendAPI(provider.apiKey);
     const { error } = await resend.emails.send({
       from: "Auth <onboarding@resend.dev>",
       to: [email],
       subject: "Your sign-in code",
       text: `Your verification code is: ${token}`,
-    })
+    });
     if (error) {
-      throw new Error(JSON.stringify(error))
+      throw new Error(JSON.stringify(error));
     }
   },
-})
+});

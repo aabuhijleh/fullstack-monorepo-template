@@ -1,25 +1,21 @@
-import type { ConvexQueryClient } from "@convex-dev/react-query"
-import type { QueryClient } from "@tanstack/react-query"
-import {
-  HeadContent,
-  Scripts,
-  createRootRouteWithContext,
-} from "@tanstack/react-router"
+import type { ConvexQueryClient } from "@convex-dev/react-query";
+import type { QueryClient } from "@tanstack/react-query";
+import { HeadContent, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
 
-import { getAuthToken } from "../lib/convex-auth-cookies"
+import { getAuthToken } from "../lib/convex-auth-cookies";
 
-import appCss from "@workspace/ui/globals.css?url"
+import appCss from "@workspace/ui/globals.css?url";
 
 export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient
-  convexQueryClient: ConvexQueryClient
+  queryClient: QueryClient;
+  convexQueryClient: ConvexQueryClient;
 }>()({
   beforeLoad: async ({ context }) => {
-    const token = await getAuthToken()
+    const token = await getAuthToken();
     if (token) {
-      context.convexQueryClient.serverHttpClient?.setAuth(token)
+      context.convexQueryClient.serverHttpClient?.setAuth(token);
     }
-    return { token }
+    return { token };
   },
   head: () => ({
     meta: [
@@ -48,7 +44,7 @@ export const Route = createRootRouteWithContext<{
     </main>
   ),
   shellComponent: RootDocument,
-})
+});
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
@@ -61,5 +57,5 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }

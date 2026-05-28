@@ -13,9 +13,7 @@
     }
   },
   "scripts": {
-    "dev": "convex dev",
-    "lint": "oxlint .",
-    "format": "oxfmt ."
+    "dev": "convex dev"
   },
   "dependencies": {
     "@auth/core": "0.37.0",

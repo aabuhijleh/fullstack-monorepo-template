@@ -1,17 +1,17 @@
-import { ConvexAuthProvider } from "@convex-dev/auth/react"
-import { ConvexReactClient } from "convex/react"
-import { Stack } from "expo-router"
-import { getItemAsync, setItemAsync, deleteItemAsync } from "expo-secure-store"
+import { ConvexAuthProvider } from "@convex-dev/auth/react";
+import { ConvexReactClient } from "convex/react";
+import { Stack } from "expo-router";
+import { getItemAsync, setItemAsync, deleteItemAsync } from "expo-secure-store";
 
 const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
   unsavedChangesWarning: false,
-})
+});
 
 const secureStorage = {
   getItem: getItemAsync,
   setItem: setItemAsync,
   removeItem: deleteItemAsync,
-}
+};
 
 export default function RootLayout() {
   return (
@@ -20,5 +20,5 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
       </Stack>
     </ConvexAuthProvider>
-  )
+  );
 }

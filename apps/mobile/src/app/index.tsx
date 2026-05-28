@@ -1,15 +1,15 @@
-import { useAuthActions } from "@convex-dev/auth/react"
-import { api } from "@workspace/backend/api"
-import { useQuery } from "convex/react"
-import { useConvexAuth } from "convex/react"
-import { useState } from "react"
-import { Text, View, TextInput, Pressable, StyleSheet } from "react-native"
+import { useAuthActions } from "@convex-dev/auth/react";
+import { api } from "@workspace/backend/api";
+import { useQuery } from "convex/react";
+import { useConvexAuth } from "convex/react";
+import { useState } from "react";
+import { Text, View, TextInput, Pressable, StyleSheet } from "react-native";
 
 function SignIn() {
-  const { signIn } = useAuthActions()
-  const [step, setStep] = useState<"email" | { email: string }>("email")
-  const [email, setEmail] = useState("")
-  const [code, setCode] = useState("")
+  const { signIn } = useAuthActions();
+  const [step, setStep] = useState<"email" | { email: string }>("email");
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
 
   if (step === "email") {
     return (
@@ -26,15 +26,15 @@ function SignIn() {
         <Pressable
           style={styles.button}
           onPress={() => {
-            const formData = new FormData()
-            formData.append("email", email)
-            void signIn("resend-otp", formData).then(() => setStep({ email }))
+            const formData = new FormData();
+            formData.append("email", email);
+            void signIn("resend-otp", formData).then(() => setStep({ email }));
           }}
         >
           <Text style={styles.buttonText}>Send code</Text>
         </Pressable>
       </View>
-    )
+    );
   }
 
   return (
@@ -51,10 +51,10 @@ function SignIn() {
       <Pressable
         style={styles.button}
         onPress={() => {
-          const formData = new FormData()
-          formData.append("code", code)
-          formData.append("email", step.email)
-          void signIn("resend-otp", formData)
+          const formData = new FormData();
+          formData.append("code", code);
+          formData.append("email", step.email);
+          void signIn("resend-otp", formData);
         }}
       >
         <Text style={styles.buttonText}>Verify</Text>
@@ -63,24 +63,24 @@ function SignIn() {
         <Text style={styles.link}>Back</Text>
       </Pressable>
     </View>
-  )
+  );
 }
 
 export default function Index() {
-  const { isAuthenticated, isLoading } = useConvexAuth()
-  const { signOut } = useAuthActions()
-  const tasks = useQuery(api.tasks.get, isAuthenticated ? {} : "skip")
+  const { isAuthenticated, isLoading } = useConvexAuth();
+  const { signOut } = useAuthActions();
+  const tasks = useQuery(api.tasks.get, isAuthenticated ? {} : "skip");
 
   if (isLoading) {
     return (
       <View style={styles.container}>
         <Text>Loading...</Text>
       </View>
-    )
+    );
   }
 
   if (!isAuthenticated) {
-    return <SignIn />
+    return <SignIn />;
   }
 
   return (
@@ -93,7 +93,7 @@ export default function Index() {
         <Text style={styles.buttonText}>Sign out</Text>
       </Pressable>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -139,4 +139,4 @@ const styles = StyleSheet.create({
     marginTop: 16,
     fontSize: 14,
   },
-})
+});
