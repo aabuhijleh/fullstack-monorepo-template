@@ -1,6 +1,12 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "ignorePatterns": ["*.gen.ts", "**/_generated/**", "**/.agents/**", "**/.claude/**"],
+  "ignorePatterns": [
+    "*.gen.ts",
+    "**/_generated/**",
+    "**/.agents/**",
+    "**/.claude/**",
+    "packages/ui/src/**/*"
+  ],
   "plugins": ["eslint", "typescript", "unicorn", "oxc", "react"],
   "jsPlugins": [{ "name": "react-hooks-js", "specifier": "eslint-plugin-react-hooks" }],
   "categories": {
@@ -9,6 +15,17 @@
     "perf": "warn"
   },
   "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["../**/*"],
+            "message": "Use absolute imports (~/) for paths nested more than one directory."
+          }
+        ]
+      }
+    ],
     "react/react-in-jsx-scope": "off",
     "react-hooks-js/component-hook-factories": "warn",
     "react-hooks-js/config": "warn",

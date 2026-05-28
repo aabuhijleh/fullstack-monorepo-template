@@ -22,7 +22,7 @@
     "noUncheckedSideEffectImports": true,
     "allowJs": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "~/*": ["./src/*"]
     }
   }
 }

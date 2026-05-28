@@ -2,7 +2,7 @@ import type { ConvexQueryClient } from "@convex-dev/react-query";
 import type { QueryClient } from "@tanstack/react-query";
 import { HeadContent, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
 
-import { getAuthToken } from "../lib/convex-auth-cookies";
+import { getAuthToken } from "~/lib/convex-auth-cookies";
 
 import appCss from "@workspace/ui/globals.css?url";
 
