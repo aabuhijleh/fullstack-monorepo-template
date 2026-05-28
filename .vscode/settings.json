@@ -33,5 +33,7 @@
   },
 
   "typescript.experimental.useTsgo": true,
-  "js/ts.experimental.useTsgo": true
+  "js/ts.experimental.useTsgo": true,
+
+  "eslint.enable": false
 }
