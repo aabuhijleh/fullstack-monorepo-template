@@ -2,6 +2,7 @@ import type { ConvexQueryClient } from "@convex-dev/react-query";
 import type { QueryClient } from "@tanstack/react-query";
 import { HeadContent, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
 import { Toaster } from "@workspace/ui/components/sonner";
+import { TooltipProvider } from "@workspace/ui/components/tooltip";
 
 import { ThemeProvider, useTheme } from "~/components/theme-provider";
 import { getAuthToken } from "~/lib/convex-auth-cookies";
@@ -61,7 +62,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ThemeProvider defaultTheme="system" storageKey="theme">
-          {children}
+          <TooltipProvider>{children}</TooltipProvider>
           <ThemedToaster />
         </ThemeProvider>
         <Scripts />
