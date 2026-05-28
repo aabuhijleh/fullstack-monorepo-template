@@ -1,12 +1,14 @@
+import type { ConvexQueryClient } from "@convex-dev/react-query"
+import type { QueryClient } from "@tanstack/react-query"
 import {
   HeadContent,
   Scripts,
   createRootRouteWithContext,
 } from "@tanstack/react-router"
-import appCss from "@workspace/ui/globals.css?url"
+
 import { getAuthToken } from "../lib/convex-auth-cookies"
-import type { QueryClient } from "@tanstack/react-query"
-import type { ConvexQueryClient } from "@convex-dev/react-query"
+
+import appCss from "@workspace/ui/globals.css?url"
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient

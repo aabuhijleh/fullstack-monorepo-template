@@ -1,10 +1,11 @@
-import { createRouter } from "@tanstack/react-router"
-import { QueryClient } from "@tanstack/react-query"
-import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
-import { ConvexQueryClient } from "@convex-dev/react-query"
 import { ConvexAuthProvider } from "@convex-dev/auth/react"
-import { routeTree } from "./routeTree.gen"
+import { ConvexQueryClient } from "@convex-dev/react-query"
+import { QueryClient } from "@tanstack/react-query"
+import { createRouter } from "@tanstack/react-router"
+import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
+
 import { createCookieSyncStorage } from "./lib/convex-auth-cookies"
+import { routeTree } from "./routeTree.gen"
 
 const isServer = typeof window === "undefined"
 

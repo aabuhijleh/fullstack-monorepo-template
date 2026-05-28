@@ -1,6 +1,6 @@
-import { useState } from "react"
-import { createFileRoute } from "@tanstack/react-router"
 import { useAuthActions } from "@convex-dev/auth/react"
+import { createFileRoute } from "@tanstack/react-router"
+import { useState } from "react"
 
 export const Route = createFileRoute("/auth")({
   component: RouteComponent,

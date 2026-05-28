@@ -4,11 +4,10 @@ Bun + Turborepo template.
 
 ## Stack
 
-- `apps/api` — Hono on Cloudflare Workers
-- `apps/web` — TanStack Start (React + Vite)
-- `apps/mobile` — Expo (React Native)
-- `packages/ui` — shared UI (Tailwind + Base UI)
-- `packages/api-client` — typed Hono client
+- `apps/web` — TanStack Start
+- `apps/mobile` — Expo
+- `packages/backend` — Convex
+- `packages/ui` — shadcn/ui
 
 ## Getting started
 
@@ -21,11 +20,11 @@ bun dev
 
 Ready for AI agent contributions.
 
-| File / Directory | Purpose |
-| --- | --- |
-| `AGENTS.md` | [Agent instructions](https://agents.md) (symlinked to `CLAUDE.md`) |
-| `.agents/skills/` | [Agent skills](https://github.com/vercel-labs/skills#what-are-agent-skills) (symlinked into `.claude/skills/`) |
-| `skills-lock.json` | [skills CLI](https://github.com/vercel-labs/skills) lockfile |
+| File / Directory   | Purpose                                                                                                        |
+| ------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `AGENTS.md`        | [Agent instructions](https://agents.md) (symlinked to `CLAUDE.md`)                                             |
+| `.agents/skills/`  | [Agent skills](https://github.com/vercel-labs/skills#what-are-agent-skills) (symlinked into `.claude/skills/`) |
+| `skills-lock.json` | [skills CLI](https://github.com/vercel-labs/skills) lockfile                                                   |
 
 ### Global CLI Tools
 

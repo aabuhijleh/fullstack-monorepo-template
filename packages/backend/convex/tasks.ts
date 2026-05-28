@@ -1,6 +1,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server"
-import { query } from "./_generated/server"
 import { ConvexError } from "convex/values"
+
+import { query } from "./_generated/server"
 
 export const get = query({
   args: {},

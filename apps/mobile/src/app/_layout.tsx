@@ -1,5 +1,5 @@
-import { ConvexReactClient } from "convex/react"
 import { ConvexAuthProvider } from "@convex-dev/auth/react"
+import { ConvexReactClient } from "convex/react"
 import { Stack } from "expo-router"
 import { getItemAsync, setItemAsync, deleteItemAsync } from "expo-secure-store"
 
