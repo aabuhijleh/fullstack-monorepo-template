@@ -1,7 +1,9 @@
 import type { ConvexQueryClient } from "@convex-dev/react-query";
 import type { QueryClient } from "@tanstack/react-query";
 import { HeadContent, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
+import { Toaster } from "@workspace/ui/components/sonner";
 
+import { ThemeProvider, useTheme } from "~/components/theme-provider";
 import { getAuthToken } from "~/lib/convex-auth-cookies";
 
 import appCss from "@workspace/ui/globals.css?url";
@@ -46,14 +48,22 @@ export const Route = createRootRouteWithContext<{
   shellComponent: RootDocument,
 });
 
+function ThemedToaster() {
+  const { theme } = useTheme();
+  return <Toaster theme={theme} />;
+}
+
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        {children}
+        <ThemeProvider defaultTheme="system" storageKey="theme">
+          {children}
+          <ThemedToaster />
+        </ThemeProvider>
         <Scripts />
       </body>
     </html>
