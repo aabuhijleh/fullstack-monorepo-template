@@ -1,0 +1,5 @@
+[install]
+# Expo/Metro does not support the isolated (symlinked) node_modules layout in a
+# monorepo. Use the hoisted (npm-style) linker so React Native autolinking and
+# Metro's transformer can resolve modules. See https://docs.expo.dev/guides/monorepos/
+linker = "hoisted"

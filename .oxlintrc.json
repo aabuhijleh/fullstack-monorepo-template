@@ -43,6 +43,14 @@
     "react-hooks-js/unsupported-syntax": "warn",
     "react-hooks-js/use-memo": "warn"
   },
+  "overrides": [
+    {
+      "files": ["apps/mobile/**"],
+      "rules": {
+        "react/style-prop-object": "off"
+      }
+    }
+  ],
   "options": {
     "typeAware": true,
     "typeCheck": true,
