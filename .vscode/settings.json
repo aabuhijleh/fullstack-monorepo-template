@@ -27,7 +27,7 @@
   },
 
   "tailwindCSS.experimental.configFile": "./packages/ui/src/styles/globals.css",
-  "tailwindCSS.classFunctions": ["cn", "cva"],
+  "tailwindCSS.classFunctions": ["cn", "cva", "class", "className", "headerClassName"],
   "files.associations": {
     "*.css": "tailwindcss"
   },
