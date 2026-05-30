@@ -60,11 +60,9 @@ export const clearCompleted = mutation({
       .query("tasks")
       .withIndex("by_user", (q) => q.eq("userId", userId))
       .collect();
-    for (const task of completed) {
-      if (task.isCompleted) {
-        await ctx.db.delete("tasks", task._id);
-      }
-    }
+    await Promise.all(
+      completed.filter((task) => task.isCompleted).map((task) => ctx.db.delete("tasks", task._id)),
+    );
   },
 });
 
@@ -74,8 +72,6 @@ export const wipeAll = internalMutation({
   args: {},
   handler: async (ctx) => {
     const all = await ctx.db.query("tasks").collect();
-    for (const task of all) {
-      await ctx.db.delete("tasks", task._id);
-    }
+    await Promise.all(all.map((task) => ctx.db.delete("tasks", task._id)));
   },
 });

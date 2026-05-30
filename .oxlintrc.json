@@ -15,6 +15,7 @@
     "perf": "warn"
   },
   "rules": {
+    "no-underscore-dangle": ["warn", { "allow": ["_id", "_creationTime"] }],
     "no-restricted-imports": [
       "error",
       {
@@ -27,7 +28,6 @@
       }
     ],
     "react/react-in-jsx-scope": "off",
-    "react-hooks-js/component-hook-factories": "warn",
     "react-hooks-js/config": "warn",
     "react-hooks-js/error-boundaries": "warn",
     "react-hooks-js/gating": "warn",
@@ -48,12 +48,6 @@
       "files": ["apps/mobile/**"],
       "rules": {
         "react/style-prop-object": "off"
-      }
-    },
-    {
-      "files": ["packages/backend/convex/**"],
-      "rules": {
-        "no-restricted-imports": "off"
       }
     }
   ],

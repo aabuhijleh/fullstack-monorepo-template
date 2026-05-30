@@ -35,7 +35,7 @@ export default function TasksScreen() {
       <Stack.Screen options={{ title: "Tasks", headerRight: renderSignOutButton }} />
       <View className="flex-1 bg-white p-4 dark:bg-gray-900">
         <TaskComposer onAdd={addTask} />
-        <View className="mt-4 mb-2 flex-row items-center justify-between">
+        <View className="mt-4 mb-2 flex-row items-center gap-3">
           <FilterTabs value={filter} onChange={setFilter} />
           {completedCount > 0 ? (
             <Pressable onPress={confirmClear} hitSlop={8}>

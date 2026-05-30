@@ -15,7 +15,7 @@ export function FilterTabs({
   onChange: (v: TaskFilter) => void;
 }) {
   return (
-    <View className="flex-row gap-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
+    <View className="flex-1 flex-row gap-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
       {FILTERS.map((f) => (
         <Pressable
           key={f.key}

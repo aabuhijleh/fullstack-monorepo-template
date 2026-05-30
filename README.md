@@ -18,7 +18,7 @@ bun dev
 
 ## AI Agents
 
-Ready for AI agent contributions.
+Ready for AI agents.
 
 | File / Directory   | Purpose                                                                                                        |
 | ------------------ | -------------------------------------------------------------------------------------------------------------- |

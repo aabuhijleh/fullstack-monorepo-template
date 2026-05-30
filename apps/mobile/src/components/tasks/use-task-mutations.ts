@@ -2,6 +2,18 @@ import { api } from "@workspace/backend/api";
 import type { Id } from "@workspace/backend/dataModel";
 import { useMutation } from "convex/react";
 
+/*
+ * Optimistic updates follow the official Convex pattern:
+ * https://docs.convex.dev/client/react/optimistic-updates
+ *  - The temp `_id`/`_creationTime` are fabricated client-side and rolled back on
+ *    server ack; `Id<T>` is a branded string with no runtime constructor, so the
+ *    cast is the documented way and the value never reaches the server.
+ *  - Updates MUST create new objects/arrays — mutating values from the local store
+ *    in place corrupts Convex's reactive query cache, so the spreads are required.
+ * These three rules misfire on that pattern.
+ */
+/* eslint-disable typescript-eslint/no-unsafe-type-assertion, oxc/no-map-spread, react-hooks-js/purity */
+
 export function useTaskMutations() {
   const add = useMutation(api.tasks.add).withOptimisticUpdate((store, { text }) => {
     const current = store.getQuery(api.tasks.list, {});
