@@ -2,13 +2,9 @@ import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ConvexQueryClient } from "@convex-dev/react-query";
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
-import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 
 import { env } from "./env";
-import { createCookieSyncStorage } from "./lib/convex-auth-cookies";
 import { routeTree } from "./routeTree.gen";
-
-const isServer = typeof window === "undefined";
 
 export function getRouter() {
   const convexQueryClient = new ConvexQueryClient(env.VITE_CONVEX_URL);
@@ -30,15 +26,9 @@ export function getRouter() {
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
     Wrap: ({ children }) => (
-      <ConvexAuthProvider
-        client={convexQueryClient.convexClient}
-        storage={isServer ? undefined : createCookieSyncStorage()}
-      >
-        {children}
-      </ConvexAuthProvider>
+      <ConvexAuthProvider client={convexQueryClient.convexClient}>{children}</ConvexAuthProvider>
     ),
   });
-  setupRouterSsrQueryIntegration({ router, queryClient });
 
   return router;
 }

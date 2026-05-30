@@ -6,7 +6,6 @@ import { TooltipProvider } from "@workspace/ui/components/tooltip";
 
 import { ThemeProvider, useTheme } from "~/components/theme-provider";
 import { env } from "~/env";
-import { getAuthToken } from "~/lib/convex-auth-cookies";
 import { generateMetadata } from "~/lib/generate-metadata";
 
 import appCss from "@workspace/ui/globals.css?url";
@@ -15,13 +14,6 @@ export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   convexQueryClient: ConvexQueryClient;
 }>()({
-  beforeLoad: async ({ context }) => {
-    const token = await getAuthToken();
-    if (token) {
-      context.convexQueryClient.serverHttpClient?.setAuth(token);
-    }
-    return { token };
-  },
   head: () => {
     const title = "Tasklit";
     const description = "A simple, fast task manager.";

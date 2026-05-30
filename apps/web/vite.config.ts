@@ -12,7 +12,7 @@ const config = defineConfig({
   plugins: [
     nitro(),
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart({ spa: { enabled: true } }),
     react(),
     babel({ presets: [reactCompilerPreset()] }),
   ],

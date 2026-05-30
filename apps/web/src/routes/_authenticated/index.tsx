@@ -17,9 +17,6 @@ import { generateMetadata } from "~/lib/generate-metadata";
 
 export const Route = createFileRoute("/_authenticated/")({
   head: () => generateMetadata({ title: "Tasks" }),
-  loader: ({ context }) => {
-    void context.queryClient.prefetchQuery(convexQuery(api.tasks.list, {}));
-  },
   component: TasksPage,
 });
 

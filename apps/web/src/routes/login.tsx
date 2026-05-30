@@ -1,6 +1,6 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useForm } from "@tanstack/react-form";
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import { Button } from "@workspace/ui/components/button";
 import {
   Card,
@@ -18,6 +18,7 @@ import {
   InputOTPSlot,
 } from "@workspace/ui/components/input-otp";
 import { Spinner } from "@workspace/ui/components/spinner";
+import { Authenticated, AuthLoading, Unauthenticated } from "convex/react";
 import { useState } from "react";
 import { z } from "zod";
 
@@ -25,13 +26,26 @@ import { generateMetadata } from "~/lib/generate-metadata";
 
 export const Route = createFileRoute("/login")({
   head: () => generateMetadata({ title: "Sign in" }),
-  beforeLoad: ({ context }) => {
-    if (context.token) {
-      throw redirect({ to: "/" });
-    }
-  },
-  component: LoginPage,
+  component: LoginRoute,
 });
+
+function LoginRoute() {
+  return (
+    <>
+      <AuthLoading>
+        <div className="flex min-h-screen items-center justify-center">
+          <Spinner />
+        </div>
+      </AuthLoading>
+      <Authenticated>
+        <Navigate to="/" />
+      </Authenticated>
+      <Unauthenticated>
+        <LoginPage />
+      </Unauthenticated>
+    </>
+  );
+}
 
 const emailSchema = z.object({
   email: z.email("Please enter a valid email address."),
