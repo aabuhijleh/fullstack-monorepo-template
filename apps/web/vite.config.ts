@@ -16,6 +16,9 @@ const config = defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] }),
   ],
+  server: {
+    open: true,
+  },
 });
 
 export default config;

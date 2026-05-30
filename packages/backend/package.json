@@ -10,20 +10,30 @@
     },
     "./dataModel": {
       "types": "./convex/_generated/dataModel.d.ts"
+    },
+    "./validators": {
+      "types": "./convex/lib/validators.ts",
+      "default": "./convex/lib/validators.ts"
     }
   },
   "scripts": {
-    "dev": "convex dev"
+    "dev": "convex dev",
+    "dashboard": "convex dashboard",
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@auth/core": "0.37.0",
     "@convex-dev/auth": "^0.0.92",
     "@oslojs/crypto": "^1.0.1",
     "convex": "^1.39.1",
-    "resend": "^6.12.4"
+    "resend": "^6.12.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@edge-runtime/vm": "^5.0.0",
     "@types/bun": "latest",
-    "typescript": "~6.0.3"
+    "convex-test": "^0.0.53",
+    "typescript": "~6.0.3",
+    "vitest": "^4"
   }
 }

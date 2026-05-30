@@ -1,6 +1,6 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useForm } from "@tanstack/react-form";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { Button } from "@workspace/ui/components/button";
 import {
   Card,
@@ -21,7 +21,10 @@ import { Spinner } from "@workspace/ui/components/spinner";
 import { useState } from "react";
 import { z } from "zod";
 
+import { generateMetadata } from "~/lib/generate-metadata";
+
 export const Route = createFileRoute("/login")({
+  head: () => generateMetadata({ title: "Sign in" }),
   beforeLoad: ({ context }) => {
     if (context.token) {
       throw redirect({ to: "/" });
@@ -31,7 +34,7 @@ export const Route = createFileRoute("/login")({
 });
 
 const emailSchema = z.object({
-  email: z.string().email("Please enter a valid email address."),
+  email: z.email("Please enter a valid email address."),
 });
 
 const codeSchema = z.object({
@@ -129,6 +132,7 @@ function EmailStep({ onSuccess }: { onSuccess: (email: string) => void }) {
 function CodeStep({ email, onBack }: { email: string; onBack: () => void }) {
   const { signIn } = useAuthActions();
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const form = useForm({
     defaultValues: { code: "" },
@@ -140,7 +144,7 @@ function CodeStep({ email, onBack }: { email: string; onBack: () => void }) {
         formData.append("code", value.code);
         formData.append("email", email);
         await signIn("resend-otp", formData);
-        window.location.href = "/";
+        void navigate({ to: "/" });
       } catch {
         setError("Invalid code. Please try again.");
       }

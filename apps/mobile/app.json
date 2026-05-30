@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "mobile",
+    "name": "Tasklit",
     "slug": "mobile",
+    "scheme": "mobile",
     "version": "1.0.0",
     "web": {
       "favicon": "./assets/favicon.png"
@@ -9,10 +10,10 @@
     "experiments": {
       "tsconfigPaths": true
     },
-    "plugins": [],
+    "plugins": ["expo-secure-store", "expo-router"],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
