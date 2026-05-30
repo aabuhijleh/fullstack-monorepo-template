@@ -13,8 +13,10 @@ import { FilterTabs, type TaskFilter } from "~/components/tasks/filter-tabs";
 import { TaskComposer } from "~/components/tasks/task-composer";
 import { TaskList } from "~/components/tasks/task-list";
 import { useTaskMutations } from "~/components/tasks/use-task-mutations";
+import { generateMetadata } from "~/lib/generate-metadata";
 
 export const Route = createFileRoute("/_authenticated/")({
+  head: () => generateMetadata({ title: "Tasks" }),
   loader: ({ context }) => {
     void context.queryClient.prefetchQuery(convexQuery(api.tasks.list, {}));
   },

@@ -5,7 +5,9 @@ import { Toaster } from "@workspace/ui/components/sonner";
 import { TooltipProvider } from "@workspace/ui/components/tooltip";
 
 import { ThemeProvider, useTheme } from "~/components/theme-provider";
+import { env } from "~/env";
 import { getAuthToken } from "~/lib/convex-auth-cookies";
+import { generateMetadata } from "~/lib/generate-metadata";
 
 import appCss from "@workspace/ui/globals.css?url";
 
@@ -20,26 +22,30 @@ export const Route = createRootRouteWithContext<{
     }
     return { token };
   },
-  head: () => ({
-    meta: [
-      {
-        charSet: "utf-8",
+  head: () => {
+    const title = "Tasklit";
+    const description = "A simple, fast task manager.";
+
+    const { meta, links } = generateMetadata({
+      charSet: "utf-8",
+      viewport: { width: "device-width", initialScale: 1 },
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        images: ["/og.png"],
+        url: env.VITE_APP_BASE_URL,
       },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "TanStack Start Starter",
-      },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
-  }),
+      icons: { icon: "/favicon.ico", apple: "/logo180.png" },
+      manifest: "/manifest.json",
+    });
+
+    return {
+      meta,
+      links: [...links, { rel: "stylesheet", href: appCss }],
+    };
+  },
   notFoundComponent: () => (
     <main className="container mx-auto p-4 pt-16">
       <h1>404</h1>

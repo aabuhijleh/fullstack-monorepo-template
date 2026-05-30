@@ -21,7 +21,10 @@ import { Spinner } from "@workspace/ui/components/spinner";
 import { useState } from "react";
 import { z } from "zod";
 
+import { generateMetadata } from "~/lib/generate-metadata";
+
 export const Route = createFileRoute("/login")({
+  head: () => generateMetadata({ title: "Sign in" }),
   beforeLoad: ({ context }) => {
     if (context.token) {
       throw redirect({ to: "/" });
