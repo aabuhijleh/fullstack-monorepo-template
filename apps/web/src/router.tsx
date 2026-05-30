@@ -4,17 +4,14 @@ import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 
+import { env } from "./env";
 import { createCookieSyncStorage } from "./lib/convex-auth-cookies";
 import { routeTree } from "./routeTree.gen";
 
 const isServer = typeof window === "undefined";
 
 export function getRouter() {
-  const CONVEX_URL = import.meta.env.VITE_CONVEX_URL;
-  if (!CONVEX_URL) {
-    throw new Error("missing envar VITE_CONVEX_URL");
-  }
-  const convexQueryClient = new ConvexQueryClient(CONVEX_URL);
+  const convexQueryClient = new ConvexQueryClient(env.VITE_CONVEX_URL);
 
   const queryClient: QueryClient = new QueryClient({
     defaultOptions: {

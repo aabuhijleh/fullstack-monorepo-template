@@ -1,5 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 
+import { env } from "~/env";
+
 const AUTH_TOKEN_COOKIE = "convex_auth_token";
 const REFRESH_TOKEN_COOKIE = "convex_auth_refresh_token";
 const COOKIE_OPTS = "path=/; max-age=31536000; SameSite=Lax";
@@ -50,7 +52,7 @@ export const getAuthToken = createServerFn({ method: "GET" }).handler(async () =
     try {
       const { ConvexHttpClient } = await import("convex/browser");
       const { api } = await import("@workspace/backend/api");
-      const client = new ConvexHttpClient(process.env.VITE_CONVEX_URL!);
+      const client = new ConvexHttpClient(env.VITE_CONVEX_URL);
       const result: {
         tokens?: { token: string; refreshToken: string } | null;
       } = await client.action(api.auth.signIn, { refreshToken });

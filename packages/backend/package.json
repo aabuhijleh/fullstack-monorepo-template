@@ -13,14 +13,16 @@
     }
   },
   "scripts": {
-    "dev": "convex dev"
+    "dev": "convex dev",
+    "dashboard": "convex dashboard"
   },
   "dependencies": {
     "@auth/core": "0.37.0",
     "@convex-dev/auth": "^0.0.92",
     "@oslojs/crypto": "^1.0.1",
     "convex": "^1.39.1",
-    "resend": "^6.12.4"
+    "resend": "^6.12.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/bun": "latest",

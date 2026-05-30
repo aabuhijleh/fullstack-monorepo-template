@@ -6,9 +6,9 @@
   "search.exclude": {
     "**/_generated/**/*": true,
     "**/routeTree.gen.ts": true,
-    "CLAUDE.md": true,
-    ".claude/**": true,
-    ".agents/**": true
+    "**/CLAUDE.md": true,
+    "**/.claude/**": true,
+    "**/.agents/**": true
   },
   "files.readonlyInclude": {
     "**/_generated/**/*": true,

@@ -3,9 +3,11 @@ import { convexAuth } from "@convex-dev/auth/server";
 import { type RandomReader, generateRandomString } from "@oslojs/crypto/random";
 import { Resend as ResendAPI } from "resend";
 
+import { env } from "./env";
+
 const ResendOTP = Email({
   id: "resend-otp",
-  apiKey: process.env.AUTH_RESEND_KEY,
+  apiKey: env.AUTH_RESEND_KEY,
   maxAge: 60 * 15,
   async generateVerificationToken() {
     const random: RandomReader = {
@@ -31,4 +33,10 @@ const ResendOTP = Email({
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
   providers: [ResendOTP],
+  jwt: {
+    durationMs: 1000 * 60 * 60, // access token: 1 hour
+  },
+  session: {
+    inactiveDurationMs: 1000 * 60 * 60 * 24 * 7, // refresh token: 1 week
+  },
 });

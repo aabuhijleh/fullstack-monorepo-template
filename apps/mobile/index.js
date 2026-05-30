@@ -1,8 +1,6 @@
-import { registerRootComponent } from "expo";
-
-import App from "./src/App";
-
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App).
-// A local entry file (instead of expo/AppEntry.js) is required in a monorepo,
-// where expo is hoisted to the root node_modules.
-registerRootComponent(App);
+// Expo Router uses this entry point to register the root component and load
+// the file-based routes from the `app/` directory.
+//
+// A local entry file (instead of relying on the default) is kept here because
+// in this monorepo `expo` is hoisted to the root node_modules.
+import "expo-router/entry";
