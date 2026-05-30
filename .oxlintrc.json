@@ -49,6 +49,12 @@
       "rules": {
         "react/style-prop-object": "off"
       }
+    },
+    {
+      "files": ["packages/backend/convex/**"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
     }
   ],
   "options": {
