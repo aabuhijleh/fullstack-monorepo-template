@@ -1,20 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { Doc } from "@workspace/backend/dataModel";
+import { id } from "@workspace/backend/testing";
 import { expect, test, vi } from "vitest";
 
 import { TaskRow } from "./task-row";
 
-// Branded Convex `Id`/`_creationTime` fields have no runtime constructor, so a
-// fixture for `Doc<"tasks">` is necessarily cast.
-// eslint-disable-next-line typescript-eslint/no-unsafe-type-assertion
 const task = {
-  _id: "t1",
+  _id: id<"tasks">("t1"),
   _creationTime: 0,
-  userId: "u1",
+  userId: id<"users">("u1"),
   text: "buy milk",
   isCompleted: false,
-} as unknown as Doc<"tasks">;
+} as Doc<"tasks">;
 
 test("calls onToggle when checkbox clicked", async () => {
   const onToggle = vi.fn();

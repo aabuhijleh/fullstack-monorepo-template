@@ -1,18 +1,16 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import type { Doc } from "@workspace/backend/dataModel";
+import { Doc } from "@workspace/backend/dataModel";
+import { id } from "@workspace/backend/testing";
 
 import { TaskRow } from "~/components/tasks/TaskRow";
 
-// Branded Convex `Id`/`_creationTime` fields have no runtime constructor, so a
-// fixture for `Doc<"tasks">` is necessarily cast.
-// eslint-disable-next-line typescript-eslint/no-unsafe-type-assertion
 const task = {
-  _id: "t1",
+  _id: id<"tasks">("t1"),
   _creationTime: 0,
-  userId: "u1",
+  userId: id<"users">("u1"),
   text: "buy milk",
   isCompleted: false,
-} as unknown as Doc<"tasks">;
+} as Doc<"tasks">;
 
 test("fires onToggle and onRemove", () => {
   const onToggle = jest.fn();

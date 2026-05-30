@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import type { Doc } from "@workspace/backend/dataModel";
-import { taskTextSchema } from "@workspace/backend/validators";
+import { taskTextValidator } from "@workspace/backend/validators";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Input } from "@workspace/ui/components/input";
@@ -20,10 +20,13 @@ export function TaskRow({ task, onToggle, onUpdate, onRemove }: Props) {
   // Inline edit uses TanStack Form (all text inputs go through it).
   const form = useForm({
     defaultValues: { text: task.text },
+    validators: {
+      onSubmit: taskTextValidator,
+    },
     onSubmit: ({ value }) => {
       const trimmed = value.text.trim();
       setEditing(false);
-      if (taskTextSchema.safeParse(trimmed).success && trimmed !== task.text) onUpdate(trimmed);
+      if (trimmed !== task.text) onUpdate(trimmed);
     },
   });
 

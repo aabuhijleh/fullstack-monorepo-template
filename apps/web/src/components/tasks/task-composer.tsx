@@ -1,5 +1,5 @@
 import { useForm } from "@tanstack/react-form";
-import { taskTextSchema } from "@workspace/backend/validators";
+import { taskTextValidator } from "@workspace/backend/validators";
 import { Button } from "@workspace/ui/components/button";
 import { Field, FieldError } from "@workspace/ui/components/field";
 import { Input } from "@workspace/ui/components/input";
@@ -8,8 +8,7 @@ export function TaskComposer({ onAdd }: { onAdd: (text: string) => Promise<unkno
   const form = useForm({
     defaultValues: { text: "" },
     validators: {
-      onSubmit: ({ value }) =>
-        taskTextSchema.safeParse(value.text).success ? undefined : "Enter 1–256 characters",
+      onSubmit: taskTextValidator,
     },
     onSubmit: async ({ value, formApi }) => {
       await onAdd(value.text.trim());
@@ -38,9 +37,7 @@ export function TaskComposer({ onAdd }: { onAdd: (text: string) => Promise<unkno
                 onChange={(e) => field.handleChange(e.target.value)}
                 onBlur={field.handleBlur}
               />
-              {isInvalid && (
-                <FieldError errors={field.state.meta.errors.map((message) => ({ message }))} />
-              )}
+              {isInvalid && <FieldError errors={field.state.meta.errors} />}
             </Field>
           );
         }}

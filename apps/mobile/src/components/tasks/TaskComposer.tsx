@@ -1,13 +1,15 @@
 import { useForm } from "@tanstack/react-form";
-import { taskTextSchema } from "@workspace/backend/validators";
+import { taskTextValidator } from "@workspace/backend/validators";
 import { Plus } from "lucide-react-native";
 import { Pressable, TextInput, View } from "react-native";
 
 export function TaskComposer({ onAdd }: { onAdd: (text: string) => Promise<unknown> }) {
   const form = useForm({
     defaultValues: { text: "" },
+    validators: {
+      onSubmit: taskTextValidator,
+    },
     onSubmit: async ({ value, formApi }) => {
-      if (!taskTextSchema.safeParse(value.text.trim()).success) return;
       await onAdd(value.text.trim());
       formApi.reset();
     },

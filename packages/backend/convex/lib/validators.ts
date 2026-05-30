@@ -1,14 +1,10 @@
-import { ConvexError } from "convex/values";
 import { z } from "zod";
 
-/** Shared Zod v4 schema for task text. Used on clients and re-checked server-side. */
-export const taskTextSchema = z.string().trim().min(1).max(256);
+import { zid } from "./zod";
 
-/** Validates and normalizes task text, throwing ConvexError on failure. */
-export function parseTaskText(text: string): string {
-  const result = taskTextSchema.safeParse(text);
-  if (!result.success) {
-    throw new ConvexError("Task text must be 1–256 characters");
-  }
-  return result.data;
-}
+export const taskValidator = z.object({
+  taskId: zid("tasks"),
+  text: z.string().trim().min(1, "Enter 1-50 characters").max(50, "Enter 1-50 characters"),
+});
+export const taskIdValidator = taskValidator.pick({ taskId: true });
+export const taskTextValidator = taskValidator.pick({ text: true });

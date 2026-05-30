@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import type { Doc } from "@workspace/backend/dataModel";
-import { taskTextSchema } from "@workspace/backend/validators";
+import { taskTextValidator } from "@workspace/backend/validators";
 import { Check, Trash2 } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
@@ -17,10 +17,13 @@ export function TaskRow({ task, onToggle, onUpdate, onRemove }: Props) {
 
   const form = useForm({
     defaultValues: { text: task.text },
+    validators: {
+      onSubmit: taskTextValidator,
+    },
     onSubmit: ({ value }) => {
       const trimmed = value.text.trim();
       setEditing(false);
-      if (taskTextSchema.safeParse(trimmed).success && trimmed !== task.text) onUpdate(trimmed);
+      if (trimmed !== task.text) onUpdate(trimmed);
     },
   });
 

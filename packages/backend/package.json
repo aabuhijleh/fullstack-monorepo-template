@@ -4,17 +4,10 @@
   "type": "module",
   "module": "index.ts",
   "exports": {
-    "./api": {
-      "types": "./convex/_generated/api.d.ts",
-      "default": "./convex/_generated/api.js"
-    },
-    "./dataModel": {
-      "types": "./convex/_generated/dataModel.d.ts"
-    },
-    "./validators": {
-      "types": "./convex/lib/validators.ts",
-      "default": "./convex/lib/validators.ts"
-    }
+    "./api": "./convex/_generated/api.ts",
+    "./dataModel": "./convex/_generated/dataModel.ts",
+    "./validators": "./convex/lib/validators.ts",
+    "./testing": "./convex/lib/testing.ts"
   },
   "scripts": {
     "dev": "convex dev",
@@ -26,6 +19,7 @@
     "@convex-dev/auth": "^0.0.92",
     "@oslojs/crypto": "^1.0.1",
     "convex": "^1.39.1",
+    "convex-helpers": "^0.1.118",
     "resend": "^6.12.4",
     "zod": "^4.4.3"
   },
