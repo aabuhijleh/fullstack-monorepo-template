@@ -2,6 +2,8 @@
 
 This file provides guidance to AI coding assistants working in this project. Read it in full before making modifications.
 
+Note: CLAUDE.md is a symlink to AGENTS.md
+
 **Self-maintaining:** After any meaningful change to the project (new conventions, architectural shifts, updated flows, gotchas found), update this file with concise edits to keep it accurate.
 
 ## Project Conventions
@@ -12,7 +14,7 @@ This file provides guidance to AI coding assistants working in this project. Rea
 - For mobile, use the expo v56.0.0 docs <https://docs.expo.dev/versions/v56.0.0/> before writing any code.
 - For mobile, use Nativewind v5 for styling. Check the docs <https://www.nativewind.dev/v5/llms.txt> before writing styling code.
 - For backend, check "./packages/backend/AGENTS.md" for important guidelines on how to correctly use Convex APIs and patterns.
-- To verify changes, run `bun check` (or `bun fix` to auto-fix). Do not run `tsc` — oxlint is type-aware (`oxlint-tsgolint`) and handles typechecking and linting in one pass.
+- To verify changes, prefer `bun check:fix` — it auto-fixes lint/format issues and reports anything left over. Use `bun check` only when you need a read-only pass (e.g. CI). Do not run `tsc` — oxlint is type-aware (`oxlint-tsgolint`) and handles typechecking and linting in one pass.
 
 ### Mobile styling gotchas (NativeWind v5 / react-native-css)
 
