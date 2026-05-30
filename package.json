@@ -14,7 +14,7 @@
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "check": "bun scripts/run-static-checks.ts check",
-    "fix": "bun scripts/run-static-checks.ts fix",
+    "check:fix": "bun scripts/run-static-checks.ts fix",
     "prepare": "lefthook install"
   },
   "devDependencies": {

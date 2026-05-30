@@ -14,7 +14,8 @@
   },
   "scripts": {
     "dev": "convex dev",
-    "dashboard": "convex dashboard"
+    "dashboard": "convex dashboard",
+    "test": "vitest run"
   },
   "dependencies": {
     "@auth/core": "0.37.0",
@@ -25,7 +26,10 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@edge-runtime/vm": "^5.0.0",
     "@types/bun": "latest",
-    "typescript": "~6.0.3"
+    "convex-test": "^0.0.53",
+    "typescript": "~6.0.3",
+    "vitest": "^4"
   }
 }
