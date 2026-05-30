@@ -1,6 +1,6 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useForm } from "@tanstack/react-form";
-import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Button } from "@workspace/ui/components/button";
 import {
   Card,
@@ -146,7 +146,6 @@ function EmailStep({ onSuccess }: { onSuccess: (email: string) => void }) {
 function CodeStep({ email, onBack }: { email: string; onBack: () => void }) {
   const { signIn } = useAuthActions();
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   const form = useForm({
     defaultValues: { code: "" },
@@ -158,7 +157,6 @@ function CodeStep({ email, onBack }: { email: string; onBack: () => void }) {
         formData.append("code", value.code);
         formData.append("email", email);
         await signIn("resend-otp", formData);
-        void navigate({ to: "/" });
       } catch {
         setError("Invalid code. Please try again.");
       }
