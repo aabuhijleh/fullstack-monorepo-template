@@ -10,6 +10,10 @@
     },
     "./dataModel": {
       "types": "./convex/_generated/dataModel.d.ts"
+    },
+    "./validators": {
+      "types": "./convex/lib/validators.ts",
+      "default": "./convex/lib/validators.ts"
     }
   },
   "scripts": {
