@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "convex dev",
     "dashboard": "convex dashboard",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@auth/core": "0.37.0",

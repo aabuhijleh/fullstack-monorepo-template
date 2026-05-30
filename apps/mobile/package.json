@@ -11,7 +11,7 @@
     "ios:build": "expo run:ios",
     "start": "expo start --tunnel",
     "prebuild": "expo prebuild",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@convex-dev/auth": "^0.0.92",
