@@ -28,5 +28,4 @@ jobs:
       - uses: actions/checkout@v6
       - uses: oven-sh/setup-bun@v2
       - run: bun ci
-      - run: cd packages/backend && bunx convex codegen
       - run: bun run test
