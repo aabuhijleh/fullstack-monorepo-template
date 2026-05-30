@@ -32,8 +32,8 @@
     "*.css": "tailwindcss"
   },
 
+  "typescript.native-preview.tsdk": "./node_modules/@typescript/native-preview",
   "typescript.experimental.useTsgo": true,
-  "js/ts.experimental.useTsgo": true,
 
   "eslint.enable": false
 }

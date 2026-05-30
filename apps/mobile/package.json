@@ -4,6 +4,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "dev": "bun run ios:build",
     "android": "expo start --android --tunnel",
     "ios": "expo start --ios --tunnel",
     "android:build": "expo run:android",
@@ -12,8 +13,10 @@
     "prebuild": "expo prebuild"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^3.1.1",
     "@tailwindcss/postcss": "^4.1.13",
     "expo": "^56.0.6",
+    "expo-secure-store": "~56.0.4",
     "expo-status-bar": "~56.0.4",
     "expo-system-ui": "~56.0.5",
     "nativewind": "preview",

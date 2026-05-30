@@ -3,7 +3,10 @@
 ## Project Conventions
 
 - Use only `bun` and `bunx` for all scripts and package management tasks; do not use `npm`, `yarn`, or `pnpm` under any circumstances.
-- When working on Expo code, read the exact versioned docs at <https://docs.expo.dev/versions/v56.0.0/> before writing any code.
+- For web, use shadcn/ui design system ("@workspace/ui" in "packages/ui") before custom code.
+- For mobile, use the expo v56.0.0 docs <https://docs.expo.dev/versions/v56.0.0/> before writing any code.
+- For mobile, use Nativewind v5 for styling. Check the docs <https://www.nativewind.dev/v5/llms.txt> before writing styling code.
+- For backend, check <packages/backend/AGENTS.md> for important guidelines on how to correctly use Convex APIs and patterns.
 
 ## Behavioral Guidelines
 

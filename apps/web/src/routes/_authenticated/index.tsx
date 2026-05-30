@@ -6,6 +6,8 @@ import { api } from "@workspace/backend/api";
 import { Button } from "@workspace/ui/components/button";
 import { Card, CardContent } from "@workspace/ui/components/card";
 
+import { ModeToggle } from "~/components/mode-toggle";
+
 export const Route = createFileRoute("/_authenticated/")({
   loader: ({ context }) => {
     void context.queryClient.prefetchQuery(convexQuery(api.tasks.get, {}));
@@ -21,13 +23,16 @@ function TasksPage() {
     <main className="mx-auto max-w-2xl p-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-lg font-semibold">Tasks</h1>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => signOut().then(() => window.location.reload())}
-        >
-          Sign out
-        </Button>
+        <div className="flex items-center gap-2">
+          <ModeToggle />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => signOut().then(() => window.location.reload())}
+          >
+            Sign out
+          </Button>
+        </div>
       </div>
       {data.length === 0 ? (
         <p className="text-sm text-muted-foreground">No tasks yet.</p>
