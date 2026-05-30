@@ -9,10 +9,13 @@ import { FilterTabs, type TaskFilter } from "~/components/tasks/FilterTabs";
 import { TaskComposer } from "~/components/tasks/TaskComposer";
 import { TaskList } from "~/components/tasks/TaskList";
 import { useTaskMutations } from "~/components/tasks/use-task-mutations";
+import { ThemeToggle } from "~/components/ThemeToggle";
+import { useThemePreference } from "~/lib/theme";
 
 export default function TasksScreen() {
   const tasks = useQuery(api.tasks.list);
   const { addTask, toggleTask, updateTask, removeTask, clearCompleted } = useTaskMutations();
+  const { theme, setTheme } = useThemePreference();
   const [filter, setFilter] = useState<TaskFilter>("all");
 
   const visible = (tasks ?? []).filter((t) =>
@@ -40,20 +43,25 @@ export default function TasksScreen() {
             </Pressable>
           ) : null}
         </View>
-        {tasks === undefined ? (
-          <ActivityIndicator className="mt-8" />
-        ) : visible.length === 0 ? (
-          <Text className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-            {tasks.length === 0 ? "No tasks yet. Add one above." : "Nothing here."}
-          </Text>
-        ) : (
-          <TaskList
-            tasks={visible}
-            onToggle={toggleTask}
-            onUpdate={updateTask}
-            onRemove={removeTask}
-          />
-        )}
+        <View className="flex-1">
+          {tasks === undefined ? (
+            <ActivityIndicator className="mt-8" />
+          ) : visible.length === 0 ? (
+            <Text className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+              {tasks.length === 0 ? "No tasks yet. Add one above." : "Nothing here."}
+            </Text>
+          ) : (
+            <TaskList
+              tasks={visible}
+              onToggle={toggleTask}
+              onUpdate={updateTask}
+              onRemove={removeTask}
+            />
+          )}
+        </View>
+        <View className="mt-4 items-center">
+          <ThemeToggle theme={theme} setTheme={setTheme} />
+        </View>
       </View>
     </>
   );
