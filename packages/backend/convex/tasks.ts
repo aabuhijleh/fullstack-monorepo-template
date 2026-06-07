@@ -19,7 +19,7 @@ export const list = zQuery({
   args: {},
   handler: async (ctx) => {
     const userId = await requireUserId(ctx);
-    // TODO: In a real app, we would use a query to get the tasks for the user.
+    // In a real app, you'd likely want a paginated query here for scalability.
     return await ctx.db
       .query("tasks")
       .withIndex("by_user", (q) => q.eq("userId", userId))
