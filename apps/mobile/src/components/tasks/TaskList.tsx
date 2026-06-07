@@ -1,4 +1,4 @@
-import type { Doc } from "@workspace/backend/dataModel";
+import { type Doc } from "@workspace/backend/dataModel";
 import { FlatList } from "react-native";
 
 import { TaskRow } from "./TaskRow";

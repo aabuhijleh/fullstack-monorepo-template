@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { Doc } from "@workspace/backend/dataModel";
+import { type Doc } from "@workspace/backend/dataModel";
 import { id } from "@workspace/backend/testing";
 import { expect, test, vi } from "vitest";
 

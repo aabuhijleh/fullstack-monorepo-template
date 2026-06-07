@@ -1,7 +1,7 @@
 import { ConvexError } from "convex/values";
 
-import { Doc, Id } from "./_generated/dataModel";
-import { MutationCtx } from "./_generated/server";
+import { type Doc, type Id } from "./_generated/dataModel";
+import { type MutationCtx } from "./_generated/server";
 import { requireUserId } from "./lib/auth";
 import { taskIdValidator, taskTextValidator, taskValidator } from "./lib/validators";
 import { zMutation, zQuery } from "./lib/zod";

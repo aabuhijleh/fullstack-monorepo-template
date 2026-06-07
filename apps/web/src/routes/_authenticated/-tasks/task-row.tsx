@@ -1,5 +1,5 @@
 import { useForm } from "@tanstack/react-form";
-import type { Doc } from "@workspace/backend/dataModel";
+import { type Doc } from "@workspace/backend/dataModel";
 import { taskTextValidator } from "@workspace/backend/validators";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";

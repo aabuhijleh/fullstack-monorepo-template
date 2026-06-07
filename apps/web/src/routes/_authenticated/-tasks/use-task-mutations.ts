@@ -1,5 +1,5 @@
 import { api } from "@workspace/backend/api";
-import type { Id } from "@workspace/backend/dataModel";
+import { type Id } from "@workspace/backend/dataModel";
 import { id } from "@workspace/backend/testing";
 import { toast } from "@workspace/ui/components/sonner";
 import { useMutation } from "convex/react";

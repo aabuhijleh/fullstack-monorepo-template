@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 
-import type { ThemePreference } from "~/lib/theme";
+import { type ThemePreference } from "~/lib/theme";
 
 interface ThemeToggleProps {
   theme: ThemePreference;

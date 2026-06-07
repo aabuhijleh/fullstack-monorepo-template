@@ -1,5 +1,5 @@
-import type { ConvexQueryClient } from "@convex-dev/react-query";
-import type { QueryClient } from "@tanstack/react-query";
+import { type ConvexQueryClient } from "@convex-dev/react-query";
+import { type QueryClient } from "@tanstack/react-query";
 import { HeadContent, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
 import { TooltipProvider } from "@workspace/ui/components/tooltip";
 

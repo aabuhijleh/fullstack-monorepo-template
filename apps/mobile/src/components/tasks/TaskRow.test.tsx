@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import { Doc } from "@workspace/backend/dataModel";
+import { type Doc } from "@workspace/backend/dataModel";
 import { id } from "@workspace/backend/testing";
 
 import { TaskRow } from "~/components/tasks/TaskRow";
