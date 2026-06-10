@@ -1,16 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import { type Doc } from "@workspace/backend/dataModel";
 import { id } from "@workspace/backend/testing";
 
-import { TaskRow } from "~/components/tasks/TaskRow";
+import { TaskRow } from "./TaskRow";
 
 const task = {
-  _id: id<"tasks">("t1"),
-  _creationTime: 0,
-  userId: id<"users">("u1"),
+  key: "t1",
+  taskId: id<"tasks">("t1"),
   text: "buy milk",
   isCompleted: false,
-} as Doc<"tasks">;
+  isPending: false,
+};
 
 test("fires onToggle and onRemove", () => {
   const onToggle = jest.fn();

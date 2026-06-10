@@ -1,12 +1,13 @@
-import { type Doc } from "@workspace/backend/dataModel";
+import { type Id } from "@workspace/backend/dataModel";
 
+import { type ProjectedTask } from "./project-tasks";
 import { TaskRow } from "./task-row";
 
 type Props = {
-  tasks: Doc<"tasks">[];
-  onToggle: (id: Doc<"tasks">["_id"]) => void;
-  onUpdate: (id: Doc<"tasks">["_id"], text: string) => void;
-  onRemove: (id: Doc<"tasks">["_id"]) => void;
+  tasks: Array<ProjectedTask>;
+  onToggle: (id: Id<"tasks">) => void;
+  onUpdate: (id: Id<"tasks">, text: string) => void;
+  onRemove: (id: Id<"tasks">) => void;
 };
 
 export function TaskList({ tasks, onToggle, onUpdate, onRemove }: Props) {
@@ -14,11 +15,11 @@ export function TaskList({ tasks, onToggle, onUpdate, onRemove }: Props) {
     <div className="flex flex-col gap-2">
       {tasks.map((task) => (
         <TaskRow
-          key={task._id}
+          key={task.key}
           task={task}
-          onToggle={() => onToggle(task._id)}
-          onUpdate={(text) => onUpdate(task._id, text)}
-          onRemove={() => onRemove(task._id)}
+          onToggle={() => task.taskId && onToggle(task.taskId)}
+          onUpdate={(text) => task.taskId && onUpdate(task.taskId, text)}
+          onRemove={() => task.taskId && onRemove(task.taskId)}
         />
       ))}
     </div>

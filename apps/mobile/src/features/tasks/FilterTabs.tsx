@@ -15,17 +15,17 @@ export function FilterTabs({
   onChange: (v: TaskFilter) => void;
 }) {
   return (
-    <View className="flex-1 flex-row gap-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
+    <View className="flex-1 flex-row gap-1 rounded-lg bg-muted p-1">
       {FILTERS.map((f) => (
         <Pressable
           key={f.key}
           accessibilityRole="tab"
           accessibilityState={{ selected: value === f.key }}
           onPress={() => onChange(f.key)}
-          className={`flex-1 items-center rounded-md px-3 py-1.5 ${value === f.key ? "bg-white dark:bg-gray-700" : ""}`}
+          className={`flex-1 items-center rounded-md px-3 py-1.5 ${value === f.key ? "bg-background" : ""}`}
         >
           <Text
-            className={`text-sm ${value === f.key ? "text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-400"}`}
+            className={`text-sm ${value === f.key ? "text-foreground" : "text-muted-foreground"}`}
           >
             {f.label}
           </Text>

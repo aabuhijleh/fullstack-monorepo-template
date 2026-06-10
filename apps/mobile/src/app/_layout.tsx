@@ -1,5 +1,6 @@
 import "~/global.css";
 import { ConvexAuthProvider, useConvexAuth } from "@convex-dev/auth/react";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, useColorScheme, View } from "react-native";
@@ -7,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { convex } from "~/lib/convex";
+import { queryClient } from "~/lib/react-query";
 import { secureStorage } from "~/lib/secure-storage";
 
 function RootNavigator() {
@@ -14,7 +16,7 @@ function RootNavigator() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-white dark:bg-gray-900">
+      <View className="flex-1 items-center justify-center bg-background">
         <ActivityIndicator />
       </View>
     );
@@ -37,14 +39,16 @@ export default function RootLayout() {
 
   return (
     <ConvexAuthProvider client={convex} storage={secureStorage} storageNamespace="convexAuth">
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaProvider>
-          <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-            <RootNavigator />
-            <StatusBar />
-          </ThemeProvider>
-        </SafeAreaProvider>
-      </GestureHandlerRootView>
+      <QueryClientProvider client={queryClient}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <SafeAreaProvider>
+            <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+              <RootNavigator />
+              <StatusBar />
+            </ThemeProvider>
+          </SafeAreaProvider>
+        </GestureHandlerRootView>
+      </QueryClientProvider>
     </ConvexAuthProvider>
   );
 }

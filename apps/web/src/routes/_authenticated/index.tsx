@@ -1,8 +1,6 @@
 import { useAuthActions } from "@convex-dev/auth/react";
-import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { api } from "@workspace/backend/api";
 import { Button } from "@workspace/ui/components/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@workspace/ui/components/empty";
 import { useState } from "react";
@@ -12,21 +10,25 @@ import { ThemeToggle } from "~/ui/theme-toggle";
 
 import { ClearCompletedButton } from "./-tasks/clear-completed-button";
 import { FilterTabs, type TaskFilter } from "./-tasks/filter-tabs";
+import { projectTasks } from "./-tasks/project-tasks";
 import { TaskComposer } from "./-tasks/task-composer";
 import { TaskList } from "./-tasks/task-list";
+import { tasksQueries } from "./-tasks/tasks.queries";
 import { useTaskMutations } from "./-tasks/use-task-mutations";
 
 export const Route = createFileRoute("/_authenticated/")({
   head: () => generateMetadata({ title: "Tasks" }),
+  loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(tasksQueries.list()),
   component: TasksPage,
 });
 
 function TasksPage() {
-  const { data: tasks } = useSuspenseQuery(convexQuery(api.tasks.list, {}));
+  const tasksQuery = useSuspenseQuery(tasksQueries.list());
   const { signOut } = useAuthActions();
-  const { addTask, toggleTask, updateTask, removeTask, clearCompleted } = useTaskMutations();
+  const mutations = useTaskMutations();
   const [filter, setFilter] = useState<TaskFilter>("all");
 
+  const tasks = projectTasks(tasksQuery.data, mutations.pending);
   const visible = tasks.filter((t) =>
     filter === "all" ? true : filter === "active" ? !t.isCompleted : t.isCompleted,
   );
@@ -45,11 +47,21 @@ function TasksPage() {
         </div>
       </div>
 
-      <TaskComposer onAdd={addTask} />
+      <TaskComposer
+        onAdd={(text) => {
+          mutations.addTask.mutate({ text }, { onError: mutations.onError });
+          return Promise.resolve();
+        }}
+      />
 
       <div className="mt-6 mb-3 flex items-center justify-between">
         <FilterTabs value={filter} onChange={setFilter} />
-        <ClearCompletedButton count={completedCount} onConfirm={clearCompleted} />
+        <ClearCompletedButton
+          count={completedCount}
+          onConfirm={() =>
+            mutations.clearCompleted.mutate(undefined, { onError: mutations.onError })
+          }
+        />
       </div>
 
       {visible.length === 0 ? (
@@ -64,9 +76,15 @@ function TasksPage() {
       ) : (
         <TaskList
           tasks={visible}
-          onToggle={toggleTask}
-          onUpdate={updateTask}
-          onRemove={removeTask}
+          onToggle={(taskId) =>
+            mutations.toggleTask.mutate({ taskId }, { onError: mutations.onError })
+          }
+          onUpdate={(taskId, text) =>
+            mutations.updateTask.mutate({ taskId, text }, { onError: mutations.onError })
+          }
+          onRemove={(taskId) =>
+            mutations.removeTask.mutate({ taskId }, { onError: mutations.onError })
+          }
         />
       )}
 

@@ -1,7 +1,6 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { useMutation, useMutationState } from "@tanstack/react-query";
 import { api } from "@workspace/backend/api";
-import { toast } from "@workspace/ui/components/sonner";
 
 import { taskMutationKeys, tasksMutations } from "./tasks.mutations";
 
@@ -79,6 +78,5 @@ export function useTaskMutations() {
       removals,
       isClearingCompleted: clearCount > 0,
     },
-    onError: () => toast.error("Something went wrong"),
   };
 }

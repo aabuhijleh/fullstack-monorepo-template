@@ -13,6 +13,10 @@ Guidance for AI coding assistants. CLAUDE.md is a symlink to this file.
 - Mobile: follow the [expo v56.0.0 docs](https://docs.expo.dev/versions/v56.0.0/) and invoke the relevant "expo" skill before writing code.
 - Mobile styling: Uniwind (Tailwind CSS 4 + CSS theming); invoke the "uniwind" skill first.
 - Backend: see `./packages/backend/AGENTS.md` for Convex guidelines.
+- TanStack Router: colocate route-owned components and data code in `-`-prefixed files/folders.
+- Expo Router: keep `src/app` route-only; colocate each screen's non-route code in `src/features/<feature>`.
+- TanStack Query: use feature-owned `*.queries.ts` and `*.mutations.ts` factory objects with `queryOptions`/`mutationOptions`. Convex factories wrap `convexQuery` without replacing its adapter-owned keys.
+- Optimistic UI: render pending mutation variables, using `useMutationState` when needed across components. Do not optimistically write to the TanStack or Convex cache.
 - Verify with `bun check:fix` (auto-fixes lint/format) or `bun check` for a read-only pass. Don't run `tsc` — oxlint (`oxlint-tsgolint`) is type-aware and covers typechecking + linting.
 
 ## Git Workflow Guidelines

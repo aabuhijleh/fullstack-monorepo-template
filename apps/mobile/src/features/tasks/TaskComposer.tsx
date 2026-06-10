@@ -21,22 +21,22 @@ export function TaskComposer({ onAdd }: { onAdd: (text: string) => Promise<unkno
         {(field) => (
           <TextInput
             placeholder="Add a task…"
-            placeholderTextColor="#9ca3af"
+            placeholderTextColor="#737373"
             value={field.state.value}
             onChangeText={field.handleChange}
             onBlur={field.handleBlur}
             onSubmitEditing={() => void form.handleSubmit()}
             returnKeyType="done"
-            className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-base text-gray-900 dark:border-gray-700 dark:text-gray-100"
+            className="flex-1 rounded-lg border border-border px-3 py-2 text-base text-foreground"
           />
         )}
       </form.Field>
       <Pressable
         accessibilityLabel="Add task"
         onPress={() => void form.handleSubmit()}
-        className="h-10 w-10 items-center justify-center rounded-lg bg-blue-600"
+        className="size-10 items-center justify-center rounded-lg bg-primary"
       >
-        <Plus size={20} color="white" />
+        <Plus size={20} color="#ffffff" />
       </Pressable>
     </View>
   );

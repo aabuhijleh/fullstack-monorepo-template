@@ -1,18 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type Doc } from "@workspace/backend/dataModel";
 import { id } from "@workspace/backend/testing";
 import { expect, test, vi } from "vitest";
 
 import { TaskRow } from "./task-row";
 
 const task = {
-  _id: id<"tasks">("t1"),
-  _creationTime: 0,
-  userId: id<"users">("u1"),
+  key: "t1",
+  taskId: id<"tasks">("t1"),
   text: "buy milk",
   isCompleted: false,
-} as Doc<"tasks">;
+  isPending: false,
+};
 
 test("calls onToggle when checkbox clicked", async () => {
   const onToggle = vi.fn();

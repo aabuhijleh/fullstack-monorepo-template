@@ -18,7 +18,7 @@ export default function SignInScreen() {
   // unlike the legacy RN SafeAreaView, has no default `flex: 1`. Keep background + fill on
   // the className-styled View and use SafeAreaView only for insets via an inline `flex: 1`.
   return (
-    <View className="flex-1 bg-white dark:bg-gray-900">
+    <View className="flex-1 bg-background">
       <SafeAreaView style={{ flex: 1 }}>
         <KeyboardAvoidingView
           className="flex-1 justify-center px-6"
@@ -56,12 +56,12 @@ function EmailStep({ onSuccess }: { onSuccess: (email: string) => void }) {
 
   return (
     <View className="gap-2">
-      <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100">Sign in</Text>
-      <Text className="text-sm text-gray-500 dark:text-gray-400">
+      <Text className="text-2xl font-bold text-foreground">Sign in</Text>
+      <Text className="text-sm text-muted-foreground">
         Enter your email to receive a verification code.
       </Text>
       <TextInput
-        className="mt-4 rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 dark:border-gray-700 dark:text-gray-100"
+        className="mt-4 rounded-lg border border-border px-4 py-3 text-base text-foreground"
         placeholder="name@example.com"
         placeholderTextColor="#9ca3af"
         value={email}
@@ -73,15 +73,15 @@ function EmailStep({ onSuccess }: { onSuccess: (email: string) => void }) {
         editable={!submitting}
         onSubmitEditing={onSubmit}
       />
-      {error ? <Text className="text-xs text-red-500">{error}</Text> : null}
+      {error ? <Text className="text-xs text-destructive">{error}</Text> : null}
       <Pressable
-        className="mt-2 flex-row items-center justify-center rounded-lg bg-gray-900 px-4 py-3 dark:bg-gray-100"
+        className="mt-2 flex-row items-center justify-center rounded-lg bg-primary px-4 py-3"
         disabled={submitting || email.length === 0}
         style={{ opacity: submitting || email.length === 0 ? 0.5 : 1 }}
         onPress={onSubmit}
       >
         {submitting ? <ActivityIndicator size="small" color="#fff" className="mr-2" /> : null}
-        <Text className="text-base font-medium text-white dark:text-gray-900">Send code</Text>
+        <Text className="text-base font-medium text-primary-foreground">Send code</Text>
       </Pressable>
     </View>
   );
@@ -108,16 +108,14 @@ function CodeStep({ email, onBack }: { email: string; onBack: () => void }) {
 
   return (
     <View className="gap-2">
-      <Text className="text-2xl font-bold text-gray-900 dark:text-gray-100">Verify code</Text>
-      <Text className="text-sm text-gray-500 dark:text-gray-400">
-        Enter the 8-digit code sent to {email}.
-      </Text>
+      <Text className="text-2xl font-bold text-foreground">Verify code</Text>
+      <Text className="text-sm text-muted-foreground">Enter the 8-digit code sent to {email}.</Text>
       <TextInput
         // Center the code via the native `textAlign` prop rather than a `text-center`
         // className, so it is set directly on the TextInput instead of going through the
         // resolved style object.
         textAlign="center"
-        className="mt-4 rounded-lg border border-gray-300 px-4 py-3 text-2xl tracking-[8px] text-gray-900 dark:border-gray-700 dark:text-gray-100"
+        className="mt-4 rounded-lg border border-border px-4 py-3 text-2xl tracking-[8px] text-foreground"
         placeholder="00000000"
         placeholderTextColor="#9ca3af"
         value={code}
@@ -128,23 +126,23 @@ function CodeStep({ email, onBack }: { email: string; onBack: () => void }) {
         editable={!submitting}
         onSubmitEditing={onSubmit}
       />
-      {error ? <Text className="text-xs text-red-500">{error}</Text> : null}
+      {error ? <Text className="text-xs text-destructive">{error}</Text> : null}
       <View className="mt-2 flex-row gap-2">
         <Pressable
-          className="flex-1 items-center justify-center rounded-lg border border-gray-300 px-4 py-3 dark:border-gray-700"
+          className="flex-1 items-center justify-center rounded-lg border border-border px-4 py-3"
           disabled={submitting}
           onPress={onBack}
         >
-          <Text className="text-base font-medium text-gray-900 dark:text-gray-100">Back</Text>
+          <Text className="text-base font-medium text-foreground">Back</Text>
         </Pressable>
         <Pressable
-          className="flex-1 flex-row items-center justify-center rounded-lg bg-gray-900 px-4 py-3 dark:bg-gray-100"
+          className="flex-1 flex-row items-center justify-center rounded-lg bg-primary px-4 py-3"
           disabled={submitting || code.length !== 8}
           style={{ opacity: submitting || code.length !== 8 ? 0.5 : 1 }}
           onPress={onSubmit}
         >
           {submitting ? <ActivityIndicator size="small" color="#fff" className="mr-2" /> : null}
-          <Text className="text-base font-medium text-white dark:text-gray-900">Verify</Text>
+          <Text className="text-base font-medium text-primary-foreground">Verify</Text>
         </Pressable>
       </View>
     </View>
