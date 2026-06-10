@@ -1,14 +1,14 @@
 # Create Modern Monorepo CLI
 
 **Date:** 2026-06-10
-**Status:** Approved direction, pending written-spec review
+**Status:** Approved
 
 ## Goal
 
 Publish an npm initializer named `create-modern-monorepo`, invoked with:
 
 ```bash
-bun create modern-monorepo my-app
+bun create modern-monorepo
 ```
 
 It creates a new copy of this full-stack template, keeps the Tasklit task manager
@@ -17,24 +17,20 @@ environment files, and gives the user one explicit path to a working `bun dev`.
 
 ## User Experience
 
-The CLI accepts an optional destination argument and otherwise prompts for it.
-It then prompts for:
+The CLI creates the project in the current directory. It refuses to run unless
+the current directory is empty. It then prompts for:
 
-- app display name, defaulting from the destination name;
-- package/repository name;
-- Expo slug;
-- Expo URL scheme;
-- iOS bundle identifier;
-- Android package name;
-- whether to install dependencies;
-- whether to initialize a Git repository.
+- app display name, which is required;
+- one native app identifier used for both the iOS bundle identifier and Android
+  package, with a default derived from the app name.
 
-Derived values are shown before files are written. All input is validated with
-Zod v4. Package names, slugs, schemes, and native identifiers get separate
+The root package name, Expo slug, and Expo URL scheme are inferred from the app
+name. Derived values are shown before files are written. All input is validated
+with Zod v4. Package names, slugs, schemes, and native identifiers get separate
 validation because their allowed formats differ.
 
-The generator refuses a non-empty destination unless an explicit future
-`--overwrite` option is added. This first version will not provide that option.
+The CLI uses `@clack/prompts` for its intro, prompts, validation feedback,
+progress indicators, cancellation, and completion message.
 
 ## Architecture
 
@@ -47,14 +43,15 @@ reproducible and does not silently follow `main`.
 
 Generation has five stages:
 
-1. Validate arguments and prompt for missing identity values.
+1. Verify the current directory is empty, then prompt for identity values.
 2. Download and extract the matching template archive into a temporary folder.
 3. Copy the template into the destination while excluding repository-only
    content, including the CLI workspace itself, `.git`, caches, local env files,
    design documents, and the template's lockfile.
 4. Apply identity changes through an explicit file manifest.
-5. Create local env files from examples, optionally run `bun install`, optionally
-   run `git init`, and print setup status.
+5. Create local env files from examples, run `bun install`, initialize Git when
+   the current directory is not already inside a repository, and print setup
+   status.
 
 Partial output is removed when generation fails before completion. Existing
 user directories are never deleted.
@@ -78,9 +75,7 @@ Brand-bearing TypeScript files use narrow, asserted placeholders. Generation
 fails if an expected placeholder is missing, preventing silently incomplete
 whitelabeling when the template evolves.
 
-When dependency installation is selected, `bun install` creates a fresh
-`bun.lock`. With `--no-install`, no lockfile is emitted; the first later
-`bun install` creates one with the generated package identity.
+`bun install` creates a fresh `bun.lock` with the generated package identity.
 
 Task UI, backend schema, authentication, theming, shared UI, and branded image
 assets remain as the demo implementation. The README explicitly lists image
@@ -126,7 +121,7 @@ guide. It will contain:
 
 - the one-line create command;
 - prerequisites;
-- all CLI prompts and non-interactive flags;
+- all CLI prompts and derived values;
 - the generated identity fields and files;
 - the external Convex, Convex Auth, and Resend setup sequence;
 - `bun setup` as the readiness check;
@@ -137,27 +132,19 @@ guide. It will contain:
 Generated projects retain the usage sections but omit CLI maintainer and
 publishing sections.
 
-## CLI Options
+## CLI Interface
 
-The first release supports:
+The first release is intentionally interactive:
 
 ```text
-create-modern-monorepo [directory]
-  --name <display-name>
-  --package-name <package-name>
-  --slug <expo-slug>
-  --scheme <url-scheme>
-  --ios-bundle-id <identifier>
-  --android-package <identifier>
-  --install / --no-install
-  --git / --no-git
-  --yes
+create-modern-monorepo
   --help
   --version
 ```
 
-`--yes` accepts derived defaults and is suitable for smoke tests. No package
-manager choice is offered; generated projects use Bun exclusively.
+The app name cannot be supplied as a flag and has no default; the user must
+enter it. No destination, package-manager, install, Git, or non-interactive
+options are offered.
 
 ## Testing
 
@@ -166,15 +153,15 @@ on GitHub or npm.
 
 Coverage includes:
 
-- argument and identifier validation;
+- app-name and identifier validation;
 - default derivation;
-- refusal of non-empty destinations;
+- refusal of a non-empty current directory;
 - exclusion of repository-only files;
 - every identity transformation;
 - env-file creation;
 - setup-checker missing, invalid, mismatched, and ready states;
 - cleanup after a failed generation;
-- `--yes --no-install --no-git` end-to-end generation.
+- end-to-end interactive generation through an injected prompt adapter.
 
 Release verification additionally packs the CLI, installs the tarball into an
 isolated temporary environment, generates a project, runs `bun install`, then
@@ -187,8 +174,8 @@ Publishing is explicit and manual for the first release:
 1. run repository checks and CLI integration tests;
 2. create a matching version tag;
 3. publish `packages/create-modern-monorepo` to npm;
-4. verify `bun create modern-monorepo smoke-app --yes` against the published
-   package.
+4. verify `bun create modern-monorepo` against the published package in an empty
+   smoke-test directory.
 
 Automated npm trusted publishing can be added after the first release proves the
 package and tag contract.
