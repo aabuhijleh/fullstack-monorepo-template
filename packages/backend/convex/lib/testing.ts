@@ -1,4 +1,4 @@
-import { type Id, type TableNames } from "../_generated/dataModel";
+import { type Id, type TableNames } from "@workspace/backend/dataModel";
 
 /**
  * Helper for tests: creates a nominally-typed Convex `Id<Table>` from a string.

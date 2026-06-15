@@ -5,8 +5,7 @@
     "**/_generated/**",
     "**/.agents/**",
     "**/.claude/**",
-    "apps/mobile/src/uniwind-types.d.ts",
-    "packages/ui/src/**/*"
+    "apps/mobile/src/uniwind-types.d.ts"
   ],
   "plugins": ["eslint", "typescript", "unicorn", "oxc", "react", "import"],
   "jsPlugins": [
@@ -70,9 +69,22 @@
       }
     },
     {
-      "files": ["packages/backend/**"],
+      "files": ["packages/ui/**"],
       "rules": {
-        "no-restricted-imports": "off"
+        "typescript/restrict-template-expressions": "off",
+        "typescript/no-unsafe-type-assertion": "off",
+        "typescript/consistent-return": "off",
+        "import/consistent-type-specifier-style": "off",
+        "no-shadow": "off",
+        "no-underscore-dangle": "off",
+        "react/no-unstable-nested-components": "off",
+        "react/no-array-index-key": "off",
+        "react/jsx-no-constructed-context-values": "off",
+        "react-hooks-js/set-state-in-effect": "off",
+        "you-might-not-need-an-effect/no-event-handler": "off",
+        "you-might-not-need-an-effect/no-pass-data-to-parent": "off",
+        "you-might-not-need-an-effect/no-initialize-state": "off",
+        "you-might-not-need-an-effect/no-external-store-subscription": "off"
       }
     }
   ],

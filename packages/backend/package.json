@@ -5,6 +5,7 @@
   "exports": {
     "./api": "./convex/_generated/api.ts",
     "./dataModel": "./convex/_generated/dataModel.ts",
+    "./server": "./convex/_generated/server.ts",
     "./validators": "./convex/lib/validators.ts",
     "./testing": "./convex/lib/testing.ts"
   },

@@ -2,7 +2,7 @@
 
 Guidance for AI coding assistants. CLAUDE.md is a symlink to this file.
 
-Self-maintaining: keep this file accurate with concise edits after meaningful changes.
+Self-maintaining: keep these AGENTS.md files accurate with concise edits after meaningful changes.
 
 This is the repo-wide router. It holds only conventions that apply everywhere.
 Package-specific guidance lives in each package's own `AGENTS.md` — read it before
@@ -12,26 +12,16 @@ working in that package.
 
 Read the package's own `AGENTS.md` before working in it:
 
-- `apps/web` (`web`) — [`apps/web/AGENTS.md`](./apps/web/AGENTS.md): TanStack Router/Query, shadcn/ui.
-- `apps/mobile` (`mobile`) — [`apps/mobile/AGENTS.md`](./apps/mobile/AGENTS.md): Expo, Expo Router, Uniwind.
-- `packages/ui` (`@workspace/ui`) — [`packages/ui/AGENTS.md`](./packages/ui/AGENTS.md): shared shadcn/ui + `theme.css`.
-- `packages/backend` (`@workspace/backend`) — [`packages/backend/AGENTS.md`](./packages/backend/AGENTS.md): Convex.
+- `apps/web` (`web`) — [`apps/web/AGENTS.md`](./apps/web/AGENTS.md)
+- `apps/mobile` (`mobile`) — [`apps/mobile/AGENTS.md`](./apps/mobile/AGENTS.md)
+- `packages/ui` (`@workspace/ui`) — [`packages/ui/AGENTS.md`](./packages/ui/AGENTS.md)
+- `packages/backend` (`@workspace/backend`) — [`packages/backend/AGENTS.md`](./packages/backend/AGENTS.md)
 
 ## Skills
 
-Skills are managed by the [`skills`](https://skills.sh) CLI and discovered on-demand
-based on where you work. Invoke a skill with the Skill tool before writing code it covers.
-
-- Repo-wide skills live in `./.agents/skills` (symlinked into `./.claude/skills`),
-  tracked by the root `skills-lock.json`. These are general engineering skills
-  (planning, debugging, code review, docs lookup, `shadcn`, `frontend-design`, `turborepo`).
-- Package-scoped skills live in each package's own `.agents/skills` + `.claude/skills`,
-  tracked by that package's `skills-lock.json`. They activate when you work in that package:
-  - `packages/backend` → Convex skills
-  - `apps/mobile` → Expo / Uniwind / React Native skills
-- Manage with `bunx skills add|remove|list` from the relevant directory — the CLI
-  reads/writes the `skills-lock.json` of the current working directory, so `cd` into the
-  package before scoping a skill to it.
+Skills are discovered on-demand based on where you work. Invoke a skill with the Skill
+tool before writing code it covers. Repo-wide skills apply everywhere; package-scoped
+skills activate when you work in that package.
 
 ## Project Conventions
 
