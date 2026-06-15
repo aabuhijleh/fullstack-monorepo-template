@@ -1,3 +1,14 @@
+# AGENTS.md — `@workspace/backend`
+
+Guidance for the Convex backend. CLAUDE.md is a symlink to this file. See the root
+[`AGENTS.md`](../../AGENTS.md) for repo-wide conventions, git workflow, and skills.
+
+## Skills
+
+Convex skills are scoped to this package (`.agents/skills`, tracked by `skills-lock.json`
+here) and activate when you work in `packages/backend`. Invoke them with the Skill tool.
+To add or remove a backend-scoped skill, run `bunx skills` from this directory.
+
 <!-- convex-ai-start -->
 
 This project uses [Convex](https://convex.dev) as its backend.

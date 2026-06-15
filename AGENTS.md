@@ -2,22 +2,42 @@
 
 Guidance for AI coding assistants. CLAUDE.md is a symlink to this file.
 
-**Self-maintaining:** keep this file accurate with concise edits after meaningful changes.
+Self-maintaining: keep this file accurate with concise edits after meaningful changes.
+
+This is the repo-wide router. It holds only conventions that apply everywhere.
+Package-specific guidance lives in each package's own `AGENTS.md` — read it before
+working in that package.
+
+## Package Router
+
+Read the package's own `AGENTS.md` before working in it:
+
+- `apps/web` (`web`) — [`apps/web/AGENTS.md`](./apps/web/AGENTS.md): TanStack Router/Query, shadcn/ui.
+- `apps/mobile` (`mobile`) — [`apps/mobile/AGENTS.md`](./apps/mobile/AGENTS.md): Expo, Expo Router, Uniwind.
+- `packages/ui` (`@workspace/ui`) — [`packages/ui/AGENTS.md`](./packages/ui/AGENTS.md): shared shadcn/ui + `theme.css`.
+- `packages/backend` (`@workspace/backend`) — [`packages/backend/AGENTS.md`](./packages/backend/AGENTS.md): Convex.
+
+## Skills
+
+Skills are managed by the [`skills`](https://skills.sh) CLI and discovered on-demand
+based on where you work. Invoke a skill with the Skill tool before writing code it covers.
+
+- Repo-wide skills live in `./.agents/skills` (symlinked into `./.claude/skills`),
+  tracked by the root `skills-lock.json`. These are general engineering skills
+  (planning, debugging, code review, docs lookup, `shadcn`, `frontend-design`, `turborepo`).
+- Package-scoped skills live in each package's own `.agents/skills` + `.claude/skills`,
+  tracked by that package's `skills-lock.json`. They activate when you work in that package:
+  - `packages/backend` → Convex skills
+  - `apps/mobile` → Expo / Uniwind / React Native skills
+- Manage with `bunx skills add|remove|list` from the relevant directory — the CLI
+  reads/writes the `skills-lock.json` of the current working directory, so `cd` into the
+  package before scoping a skill to it.
 
 ## Project Conventions
 
 - Use only `bun`/`bunx` — never `npm`, `yarn`, or `pnpm`.
 - Use Zod v4 for validating user input, environment variables, and external data sources, not manual types.
 - Prefer inferring return types over explicitly annotating them.
-- Web: use shadcn/ui (`@workspace/ui` in `./packages/ui`) before custom code; invoke the "shadcn" skill first.
-- Mobile: follow the [expo v56.0.0 docs](https://docs.expo.dev/versions/v56.0.0/) and invoke the relevant "expo" skill before writing code.
-- Mobile styling: Uniwind (Tailwind CSS 4 + CSS theming); invoke the "uniwind" skill first.
-- Web & Mobile: Share styles via `theme.css` in the `@workspace/ui` package.
-- Backend: see `./packages/backend/AGENTS.md` for Convex guidelines.
-- TanStack Router: colocate route-owned components and data code in `-`-prefixed files/folders.
-- Expo Router: keep `src/app` route-only; colocate each screen's non-route code in `src/features/<feature>`.
-- TanStack Query: use feature-owned `*.queries.ts` and `*.mutations.ts` factory objects with `queryOptions`/`mutationOptions`. Convex factories wrap `convexQuery` without replacing its adapter-owned keys.
-- Optimistic UI: render pending mutation variables, using `useMutationState` when needed across components. Do not optimistically write to the TanStack or Convex cache.
 - Verify with `bun check:fix` (auto-fixes lint/format) or `bun check` for a read-only pass. Don't run `tsc` — oxlint (`oxlint-tsgolint`) is type-aware and covers typechecking + linting.
 
 ## Git Workflow Guidelines
@@ -35,7 +55,7 @@ Guidance for AI coding assistants. CLAUDE.md is a symlink to this file.
 
 ### 1. Think Before Coding
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+Don't assume. Don't hide confusion. Surface tradeoffs.
 
 Before implementing:
 
@@ -46,7 +66,7 @@ Before implementing:
 
 ### 2. Simplicity First
 
-**Minimum code that solves the problem. Nothing speculative.**
+Minimum code that solves the problem. Nothing speculative.
 
 - No features beyond what was asked.
 - No abstractions for single-use code.
@@ -58,7 +78,7 @@ Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, sim
 
 ### 3. Surgical Changes
 
-**Touch only what you must. Clean up only your own mess.**
+Touch only what you must. Clean up only your own mess.
 
 When editing existing code:
 
@@ -76,7 +96,7 @@ The test: Every changed line should trace directly to the user's request.
 
 ### 4. Goal-Driven Execution
 
-**Define success criteria. Loop until verified.**
+Define success criteria. Loop until verified.
 
 Transform tasks into verifiable goals:
 
