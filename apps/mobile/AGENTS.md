@@ -9,7 +9,7 @@ Stack: Expo.
 
 - Follow the [Expo v56.0.0 docs](https://docs.expo.dev/versions/v56.0.0/) and invoke the relevant "expo" skill before writing code.
 - Styling: Uniwind (Tailwind CSS 4 + CSS theming); invoke the "uniwind" skill first.
-- Theme tokens live in `@workspace/ui`'s `theme.css` — don't fork them here.
+- Styling: always prefer the common theme tokens in `@workspace/ui`'s `theme.css` over custom values — don't fork or hardcode them here.
 - Routing: expo-router (file-based). Routes live under `src/app/`; shared non-route code under `src/` (imported via the `~/*` alias → `src/*`). Entry is a local `index.js` that imports `expo-router/entry`.
 - Tests: **jest**; run `bun run test`.
 
