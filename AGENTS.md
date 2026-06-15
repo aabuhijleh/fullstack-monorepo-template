@@ -12,6 +12,7 @@ Guidance for AI coding assistants. CLAUDE.md is a symlink to this file.
 - Web: use shadcn/ui (`@workspace/ui` in `./packages/ui`) before custom code; invoke the "shadcn" skill first.
 - Mobile: follow the [expo v56.0.0 docs](https://docs.expo.dev/versions/v56.0.0/) and invoke the relevant "expo" skill before writing code.
 - Mobile styling: Uniwind (Tailwind CSS 4 + CSS theming); invoke the "uniwind" skill first.
+- Web & Mobile: Share styles via `theme.css` in the `@workspace/ui` package.
 - Backend: see `./packages/backend/AGENTS.md` for Convex guidelines.
 - TanStack Router: colocate route-owned components and data code in `-`-prefixed files/folders.
 - Expo Router: keep `src/app` route-only; colocate each screen's non-route code in `src/features/<feature>`.

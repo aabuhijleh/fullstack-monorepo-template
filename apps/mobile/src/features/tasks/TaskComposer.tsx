@@ -1,7 +1,10 @@
 import { useForm } from "@tanstack/react-form";
 import { taskTextValidator } from "@workspace/backend/validators";
-import { Plus } from "lucide-react-native";
+import { Plus as LucidePlus } from "lucide-react-native";
 import { Pressable, TextInput, View } from "react-native";
+import { withUniwind } from "uniwind";
+
+const Plus = withUniwind(LucidePlus);
 
 export function TaskComposer({ onAdd }: { onAdd: (text: string) => Promise<unknown> }) {
   const form = useForm({
@@ -21,7 +24,7 @@ export function TaskComposer({ onAdd }: { onAdd: (text: string) => Promise<unkno
         {(field) => (
           <TextInput
             placeholder="Add a task…"
-            placeholderTextColor="#737373"
+            placeholderTextColorClassName="accent-muted-foreground"
             value={field.state.value}
             onChangeText={field.handleChange}
             onBlur={field.handleBlur}
@@ -36,7 +39,7 @@ export function TaskComposer({ onAdd }: { onAdd: (text: string) => Promise<unkno
         onPress={() => void form.handleSubmit()}
         className="size-10 items-center justify-center rounded-lg bg-primary"
       >
-        <Plus size={20} color="#ffffff" />
+        <Plus size={20} colorClassName="accent-primary-foreground" />
       </Pressable>
     </View>
   );

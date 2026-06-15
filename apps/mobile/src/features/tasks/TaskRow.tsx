@@ -1,10 +1,14 @@
 import { useForm } from "@tanstack/react-form";
 import { taskTextValidator } from "@workspace/backend/validators";
-import { Check, Trash2 } from "lucide-react-native";
+import { Check as LucideCheck, Trash2 as LucideTrash2 } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
+import { withUniwind } from "uniwind";
 
 import { type ProjectedTask } from "./project-tasks";
+
+const Check = withUniwind(LucideCheck);
+const Trash2 = withUniwind(LucideTrash2);
 
 type Props = {
   task: ProjectedTask;
@@ -46,7 +50,7 @@ export function TaskRow({ task, onToggle, onUpdate, onRemove }: Props) {
         disabled={!task.taskId || task.isPending}
         className="size-6 items-center justify-center rounded border border-border"
       >
-        {task.isCompleted ? <Check size={16} color="#737373" /> : null}
+        {task.isCompleted ? <Check size={16} colorClassName="accent-muted-foreground" /> : null}
       </Pressable>
       {editing ? (
         <form.Field name="text">
@@ -77,7 +81,7 @@ export function TaskRow({ task, onToggle, onUpdate, onRemove }: Props) {
         hitSlop={8}
         disabled={!task.taskId || task.isPending}
       >
-        <Trash2 size={18} color="#ef4444" />
+        <Trash2 size={18} colorClassName="accent-muted-foreground" />
       </Pressable>
     </View>
   );
