@@ -5,6 +5,10 @@ Guidance for the Convex backend. CLAUDE.md is a symlink to this file. See the ro
 
 Stack: Convex.
 
+## Conventions
+
+- Tests: **vitest** with `convex-test`; run `bun run test`.
+
 <!-- convex-ai-start -->
 
 This project uses [Convex](https://convex.dev) as its backend.

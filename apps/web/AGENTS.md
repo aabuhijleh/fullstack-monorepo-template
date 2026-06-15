@@ -9,3 +9,4 @@ Stack: TanStack Start in SPA mode.
 
 - UI: use shadcn/ui from `@workspace/ui` before writing custom code; invoke the "shadcn" skill first.
 - Theme tokens live in `@workspace/ui`'s `theme.css` — don't fork them here.
+- Tests: **vitest** (with `@testing-library/react`); run `bun run test`.
