@@ -22,8 +22,8 @@ import { Authenticated, AuthLoading, Unauthenticated } from "convex/react";
 import { useState } from "react";
 import { z } from "zod";
 
-import { generateMetadata } from "~/lib/generate-metadata";
-import { FullPageSpinner } from "~/ui/full-page-spinner";
+import { FullPageSpinner } from "~/components/full-page-spinner";
+import { generateMetadata } from "~/lib/utils/generate-metadata";
 
 export const Route = createFileRoute("/login")({
   head: () => generateMetadata({ title: "Sign in" }),

@@ -9,7 +9,6 @@
  */
 
 import type * as auth from "../auth.js";
-import type * as env from "../env.js";
 import type * as http from "../http.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as lib_testing from "../lib/testing.js";
@@ -26,7 +25,6 @@ import { anyApi, componentsGeneric } from "convex/server";
 
 const fullApi: ApiFromModules<{
   auth: typeof auth;
-  env: typeof env;
   http: typeof http;
   "lib/auth": typeof lib_auth;
   "lib/testing": typeof lib_testing;

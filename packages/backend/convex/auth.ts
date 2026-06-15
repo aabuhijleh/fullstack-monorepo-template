@@ -3,7 +3,7 @@ import { convexAuth } from "@convex-dev/auth/server";
 import { type RandomReader, generateRandomString } from "@oslojs/crypto/random";
 import { Resend as ResendAPI } from "resend";
 
-import { env } from "./env";
+import { env } from "./_generated/server";
 
 const ResendOTP = Email({
   id: "resend-otp",

@@ -4,7 +4,8 @@
 @import "@fontsource-variable/ibm-plex-sans";
 @import "./theme.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light, .light *));
+@custom-variant dark (&:is(.dark, .dark *));
 @source "../../../apps/**/*.{ts,tsx}";
 @source "../../../components/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";

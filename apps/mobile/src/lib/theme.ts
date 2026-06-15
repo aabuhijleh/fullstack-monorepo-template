@@ -1,14 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { Appearance } from "react-native";
+import { Uniwind } from "uniwind";
 
 export type ThemePreference = "light" | "dark" | "system";
 
 const STORAGE_KEY = "theme";
-
-function apply(preference: ThemePreference) {
-  Appearance.setColorScheme(preference === "system" ? "unspecified" : preference);
-}
 
 export function useThemePreference() {
   const [theme, setThemeState] = useState<ThemePreference>("system");
@@ -17,14 +13,16 @@ export function useThemePreference() {
     void AsyncStorage.getItem(STORAGE_KEY).then((stored) => {
       if (stored === "light" || stored === "dark" || stored === "system") {
         setThemeState(stored);
-        apply(stored);
+        Uniwind.setTheme(stored);
       }
     });
   }, []);
 
   const setTheme = (next: ThemePreference) => {
     setThemeState(next);
-    apply(next);
+    // Uniwind.setTheme also syncs the native color scheme (Appearance), which
+    // drives the status bar and the React Navigation header theme.
+    Uniwind.setTheme(next);
     void AsyncStorage.setItem(STORAGE_KEY, next);
   };
 

@@ -15,11 +15,11 @@
     "clean": "bun exec \"rm -rf .turbo node_modules\""
   },
   "dependencies": {
-    "@auth/core": "0.37.0",
-    "@convex-dev/auth": "^0.0.92",
+    "@auth/core": "0.41.1",
+    "@convex-dev/auth": "^0.0.94",
     "@oslojs/crypto": "^1.0.1",
-    "convex": "^1.39.1",
-    "convex-helpers": "^0.1.118",
+    "convex": "^1.41.0",
+    "convex-helpers": "^0.1.119",
     "resend": "^6.12.4",
     "zod": "^4.4.3"
   },
@@ -28,6 +28,6 @@
     "@types/bun": "latest",
     "convex-test": "^0.0.53",
     "typescript": "~6.0.3",
-    "vitest": "^4"
+    "vitest": "^4.1.9"
   }
 }

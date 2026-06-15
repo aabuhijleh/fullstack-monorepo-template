@@ -1,17 +1,31 @@
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { ConvexQueryClient } from "@convex-dev/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 
 import { env } from "./env";
-import { createReactQueryClients } from "./lib/react-query";
 import { routeTree } from "./routeTree.gen";
+
+function createReactQueryClients(convexUrl: string) {
+  const convexQueryClient = new ConvexQueryClient(convexUrl);
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        queryKeyHashFn: convexQueryClient.hashFn(),
+        queryFn: convexQueryClient.queryFn(),
+      },
+    },
+  });
+
+  convexQueryClient.connect(queryClient);
+  return { convexQueryClient, queryClient };
+}
 
 export function getRouter() {
   const { convexQueryClient, queryClient } = createReactQueryClients(env.VITE_CONVEX_URL);
 
   const router = createRouter({
     routeTree,
-    context: { queryClient, convexQueryClient },
     scrollRestoration: true,
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,

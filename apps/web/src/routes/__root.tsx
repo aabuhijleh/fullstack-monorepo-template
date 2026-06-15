@@ -1,19 +1,14 @@
-import { type ConvexQueryClient } from "@convex-dev/react-query";
-import { type QueryClient } from "@tanstack/react-query";
 import { HeadContent, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
 import { TooltipProvider } from "@workspace/ui/components/tooltip";
 
+import { ThemeProvider } from "~/components/theme-provider";
+import { ThemedToaster } from "~/components/themed-toaster";
 import { env } from "~/env";
-import { generateMetadata } from "~/lib/generate-metadata";
-import { ThemeProvider } from "~/ui/theme-provider";
-import { ThemedToaster } from "~/ui/themed-toaster";
+import { generateMetadata } from "~/lib/utils/generate-metadata";
 
 import appCss from "@workspace/ui/globals.css?url";
 
-export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient;
-  convexQueryClient: ConvexQueryClient;
-}>()({
+export const Route = createRootRouteWithContext()({
   head: () => {
     const title = "Tasklit";
     const description = "A simple, fast task manager.";

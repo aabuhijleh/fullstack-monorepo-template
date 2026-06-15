@@ -5,8 +5,8 @@ import { Button } from "@workspace/ui/components/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@workspace/ui/components/empty";
 import { useState } from "react";
 
-import { generateMetadata } from "~/lib/generate-metadata";
-import { ThemeToggle } from "~/ui/theme-toggle";
+import { ThemeToggle } from "~/components/theme-toggle";
+import { generateMetadata } from "~/lib/utils/generate-metadata";
 
 import { ClearCompletedButton } from "./-tasks/clear-completed-button";
 import { FilterTabs, type TaskFilter } from "./-tasks/filter-tabs";
@@ -18,7 +18,6 @@ import { useTaskMutations } from "./-tasks/use-task-mutations";
 
 export const Route = createFileRoute("/_authenticated/")({
   head: () => generateMetadata({ title: "Tasks" }),
-  loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(tasksQueries.list()),
   component: TasksPage,
 });
 
