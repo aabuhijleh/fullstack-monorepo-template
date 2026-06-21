@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 
 export type TaskFilter = "all" | "active" | "completed";
-const FILTERS: { key: TaskFilter; label: string }[] = [
+const FILTERS: Array<{ key: TaskFilter; label: string }> = [
   { key: "all", label: "All" },
   { key: "active", label: "Active" },
   { key: "completed", label: "Completed" },

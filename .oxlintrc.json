@@ -21,6 +21,7 @@
     "perf": "warn"
   },
   "rules": {
+    "typescript/array-type": ["error", { "default": "generic" }],
     "typescript/consistent-type-imports": ["error", { "fixStyle": "inline-type-imports" }],
     "import/consistent-type-specifier-style": ["error", "prefer-inline"],
     "import/no-unassigned-import": "off",
@@ -34,6 +35,15 @@
             "message": "Use absolute imports (~/) for paths nested more than one directory."
           }
         ]
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "fix": {
+          "imports": "safe-fix",
+          "variables": "off"
+        }
       }
     ],
     "react/react-in-jsx-scope": "off",

@@ -13,13 +13,13 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
 
   return (
     <main className="container mx-auto p-8">
-      <header className="flex items-center justify-between">
+      <header className="mb-4 flex items-center justify-between">
         <h1>Tasklit</h1>
         <div className="flex gap-2">
-          <ThemeToggle />
+          <ThemeToggle size="icon" />
           <Button
             variant="outline"
-            size="sm"
+            size="default"
             disabled={isSigningOut}
             onClick={() => startSignOutTransition(signOut)}
           >

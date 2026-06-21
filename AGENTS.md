@@ -27,10 +27,11 @@ skills activate when you work in that package.
 
 - Turborepo monorepo: apps in `apps/`, shared libraries in `packages/`; tasks run via `turbo`.
 - Use only `bun`/`bunx` — never `npm`, `yarn`, or `pnpm`.
+- All file names should be kebab-case.
 - Use Zod v4 for validating user input, environment variables, and external data sources, not manual types.
 - Prefer inferring return types over explicitly annotating them.
 - Verify with `bun check:fix` (auto-fixes lint/format) or `bun check` for a read-only pass. Don't run `tsc` — oxlint (`oxlint-tsgolint`) is type-aware and covers typechecking + linting.
-- Run tests with `bun run test` (delegates to `turbo run test`). Frameworks differ by package: `web` and `backend` use **vitest**, `mobile` uses **jest**. See each package's `AGENTS.md`.
+- Run tests with `bun run test` (delegates to `turbo run test`)
 
 ## Git Workflow Guidelines
 
