@@ -2,7 +2,7 @@ import { type Id } from "@workspace/backend/dataModel";
 import { FlatList } from "react-native";
 
 import { type ProjectedTask } from "./project-tasks";
-import { TaskRow } from "./TaskRow";
+import { TaskRow } from "./task-row";
 
 type Props = {
   tasks: Array<ProjectedTask>;
@@ -16,7 +16,7 @@ export function TaskList({ tasks, onToggle, onUpdate, onRemove }: Props) {
     <FlatList
       data={tasks}
       keyExtractor={(task) => task.key}
-      contentContainerStyle={{ gap: 8, paddingVertical: 8 }}
+      contentContainerStyle={{ paddingVertical: 4 }}
       renderItem={({ item }) => (
         <TaskRow
           task={item}

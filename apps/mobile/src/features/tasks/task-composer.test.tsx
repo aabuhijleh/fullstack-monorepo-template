@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 
-import { TaskComposer } from "./TaskComposer";
+import { TaskComposer } from "./task-composer";
 
 test("submits trimmed text", async () => {
   const onAdd = jest.fn().mockResolvedValue(undefined);

@@ -39,7 +39,7 @@ export function TaskRow({ task, onToggle, onUpdate, onRemove }: Props) {
 
   return (
     <View
-      className="flex-row items-center gap-3 rounded-lg border border-border px-3 py-3"
+      className="flex-row items-center gap-3 py-2.5"
       style={{ opacity: task.isPending ? 0.6 : 1 }}
     >
       <Pressable
@@ -48,9 +48,11 @@ export function TaskRow({ task, onToggle, onUpdate, onRemove }: Props) {
         accessibilityState={{ checked: task.isCompleted }}
         onPress={onToggle}
         disabled={!task.taskId || task.isPending}
-        className="size-6 items-center justify-center rounded border border-border"
+        className={`size-5 items-center justify-center border ${
+          task.isCompleted ? "border-primary bg-primary" : "border-input"
+        }`}
       >
-        {task.isCompleted ? <Check size={16} colorClassName="accent-muted-foreground" /> : null}
+        {task.isCompleted ? <Check size={14} colorClassName="accent-primary-foreground" /> : null}
       </Pressable>
       {editing ? (
         <form.Field name="text">
@@ -63,14 +65,14 @@ export function TaskRow({ task, onToggle, onUpdate, onRemove }: Props) {
               onBlur={() => void form.handleSubmit()}
               onSubmitEditing={() => void form.handleSubmit()}
               editable={!task.isPending}
-              className="flex-1 text-base text-foreground"
+              className="flex-1 font-sans text-sm text-foreground"
             />
           )}
         </form.Field>
       ) : (
         <Text
           onPress={startEditing}
-          className={`flex-1 text-base ${task.isCompleted ? "text-muted-foreground line-through" : "text-foreground"}`}
+          className={`flex-1 font-sans text-sm ${task.isCompleted ? "text-muted-foreground line-through" : "text-foreground"}`}
         >
           {task.text}
         </Text>
@@ -81,7 +83,7 @@ export function TaskRow({ task, onToggle, onUpdate, onRemove }: Props) {
         hitSlop={8}
         disabled={!task.taskId || task.isPending}
       >
-        <Trash2 size={18} colorClassName="accent-muted-foreground" />
+        <Trash2 size={16} colorClassName="accent-muted-foreground" />
       </Pressable>
     </View>
   );

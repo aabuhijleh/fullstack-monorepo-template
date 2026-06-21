@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { id } from "@workspace/backend/testing";
 
-import { TaskRow } from "./TaskRow";
+import { TaskRow } from "./task-row";
 
 const task = {
   key: "t1",

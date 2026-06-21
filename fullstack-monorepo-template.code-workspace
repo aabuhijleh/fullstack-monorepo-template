@@ -27,12 +27,14 @@
       "**/.claude/**": true,
       "**/.agents/**": true,
       "**/CLAUDE.md": true,
+      "**/.output/**": true,
     },
     "files.watcherExclude": {
       "**/node_modules/**": true,
       "**/dist/**": true,
       "**/.claude/**": true,
       "**/.agents/**": true,
+      "**/.output/**": true,
     },
 
     // Tailwind & TypeScript language servers (window-scoped → can't live per-folder)

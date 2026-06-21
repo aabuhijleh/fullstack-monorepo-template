@@ -3,3 +3,15 @@
 @import "@workspace/ui/theme.css";
 
 @source "./**/*.{ts,tsx}";
+
+/*
+ * IBM Plex Sans — matches the web app. React Native can't use the web's
+ * `@fontsource` woff2 files, so the .ttf weights are loaded at runtime via
+ * `useFonts` in `app/_layout.tsx`. Each family name below must match the
+ * `useFonts` key exactly. One file per weight — RN has no synthetic weights.
+ */
+@theme {
+  --font-sans: "IBMPlexSans_400Regular";
+  --font-sans-medium: "IBMPlexSans_500Medium";
+  --font-heading: "IBMPlexSans_600SemiBold";
+}

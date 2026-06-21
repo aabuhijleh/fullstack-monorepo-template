@@ -1,0 +1,54 @@
+name: Semantic Release
+
+# Single release entrypoint for the monorepo. Runs multi-semantic-release at the
+# repo root: it discovers every workspace package (web, mobile, @workspace/ui,
+# @workspace/backend), filters each package's commits by the files they touched,
+# and releases only the package(s) with relevant changes — emitting per-package
+# tags (`web@x.y.z`, `mobile@x.y.z`, `@workspace/ui@x.y.z`, …) and GitHub Releases.
+#
+# Triggered after the Code Quality workflow succeeds on main.
+
+on:
+  workflow_run:
+    workflows: ["Code Quality"]
+    types:
+      - completed
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  semantic-release:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24" # Required by semantic-release
+
+      - name: Install dependencies
+        run: bun ci
+
+      - name: Multi Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bunx multi-semantic-release

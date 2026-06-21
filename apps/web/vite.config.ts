@@ -13,6 +13,12 @@ const config = defineConfig({
     nitro(),
     tailwindcss(),
     tanstackStart({
+      // App layer lives under src/app: thin routes + router entry + chrome.
+      router: {
+        entry: "app/router.tsx",
+        routesDirectory: "app/routes",
+        generatedRouteTree: "app/routeTree.gen.ts",
+      },
       spa: {
         enabled: true,
         prerender: {

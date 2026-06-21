@@ -42,6 +42,7 @@ Multi-context (monorepo): `CONTEXT-MAP.md` at the root indexes per-package `CONT
 ## Project Conventions
 
 - Turborepo monorepo: apps in `apps/`, shared libraries in `packages/`; tasks run via `turbo`.
+- Local dev bootstrap: `./setup.sh` (`bun run setup`) — idempotent; verifies toolchain, installs deps, writes env files, provisions Convex, prebuilds iOS. Then `bun dev`.
 - Use only `bun`/`bunx` — never `npm`, `yarn`, or `pnpm`.
 - All file names should be kebab-case.
 - Use Zod v4 for validating user input, environment variables, and external data sources, not manual types.
@@ -60,3 +61,4 @@ Multi-context (monorepo): `CONTEXT-MAP.md` at the root indexes per-package `CONT
 - PR template: ".github/pull_request_template.md"
 - No AI attribution, never add "Generated with ...", "Co-authored-by: ...", etc. in PR descriptions or commit messages.
 - Enable auto-merge if possible when creating a PR.
+- Releases: `multi-semantic-release` runs on push to `main` after Code Quality passes — versions each workspace independently from commit types, emitting `name@version` tags + GitHub Releases. Shared config in `release.config.base.cjs`, re-exported per workspace. Conventional-commit types drive bumps (`feat`→minor, others→patch, `docs`→none), so write commits accordingly.

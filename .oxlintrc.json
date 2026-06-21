@@ -96,6 +96,61 @@
         "you-might-not-need-an-effect/no-initialize-state": "off",
         "you-might-not-need-an-effect/no-external-store-subscription": "off"
       }
+    },
+    {
+      "files": ["apps/web/src/features/**", "apps/mobile/src/features/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["~/features/**"],
+                "message": "Features are isolated. Import shared layers (~/components, ~/hooks, ~/lib, ~/config, ~/types), use relative imports within this feature, and compose features in the app layer (~/app)."
+              },
+              {
+                "group": ["~/app/**"],
+                "message": "Unidirectional flow (shared → features → app): features must not import the app layer (~/app)."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "apps/web/src/components/**",
+        "apps/web/src/hooks/**",
+        "apps/web/src/lib/**",
+        "apps/web/src/config/**",
+        "apps/web/src/types/**",
+        "apps/mobile/src/components/**",
+        "apps/mobile/src/hooks/**",
+        "apps/mobile/src/lib/**",
+        "apps/mobile/src/config/**",
+        "apps/mobile/src/types/**"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../**/*"],
+                "message": "Use absolute imports (~/) for paths nested more than one directory."
+              },
+              {
+                "group": ["~/features/**"],
+                "message": "Shared layers must stay feature-agnostic: they must not import from ~/features."
+              },
+              {
+                "group": ["~/app/**"],
+                "message": "Unidirectional flow (shared → features → app): shared layers must not import the app layer (~/app)."
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "options": {

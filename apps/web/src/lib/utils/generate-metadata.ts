@@ -1,6 +1,6 @@
 import { createMetadataGenerator } from "tanstack-meta";
 
-import { env } from "~/env";
+import { env } from "~/config/env";
 
 const DEFAULT_TITLE = "Tasklit";
 const TITLE_TEMPLATE = "%s | Tasklit";

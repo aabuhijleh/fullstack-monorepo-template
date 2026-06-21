@@ -3,7 +3,8 @@ import { ConvexQueryClient } from "@convex-dev/react-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 
-import { env } from "./env";
+import { env } from "~/config/env";
+
 import { routeTree } from "./routeTree.gen";
 
 function createReactQueryClients(convexUrl: string) {

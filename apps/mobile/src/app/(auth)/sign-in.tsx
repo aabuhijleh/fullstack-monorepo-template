@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { AppLogo } from "~/components/app-logo";
+
 export default function SignInScreen() {
   const [step, setStep] = useState<"email" | { email: string }>("email");
 
@@ -24,11 +26,16 @@ export default function SignInScreen() {
           className="flex-1 justify-center px-6"
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
-          {step === "email" ? (
-            <EmailStep onSuccess={(email) => setStep({ email })} />
-          ) : (
-            <CodeStep email={step.email} onBack={() => setStep("email")} />
-          )}
+          <View className="mx-auto w-full max-w-sm">
+            <View className="mb-8 items-center">
+              <AppLogo size={44} />
+            </View>
+            {step === "email" ? (
+              <EmailStep onSuccess={(email) => setStep({ email })} />
+            ) : (
+              <CodeStep email={step.email} onBack={() => setStep("email")} />
+            )}
+          </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
     </View>
@@ -54,16 +61,20 @@ function EmailStep({ onSuccess }: { onSuccess: (email: string) => void }) {
     }
   };
 
+  const disabled = submitting || email.length === 0;
+
   return (
-    <View className="gap-2">
-      <Text className="text-2xl font-bold text-foreground">Sign in</Text>
-      <Text className="text-sm text-muted-foreground">
-        Enter your email to receive a verification code.
+    <View className="gap-1.5">
+      <Text className="text-center font-heading text-xl text-foreground">
+        What's your email address?
+      </Text>
+      <Text className="text-center font-sans text-sm text-muted-foreground">
+        We'll send you a verification code to sign in.
       </Text>
       <TextInput
-        className="mt-4 rounded-lg border border-border px-4 py-3 text-base text-foreground"
+        className="mt-5 h-11 border border-input bg-background px-3 font-sans text-base text-foreground focus:border-foreground"
         placeholder="name@example.com"
-        placeholderTextColor="#9ca3af"
+        placeholderTextColorClassName="accent-muted-foreground"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -73,15 +84,19 @@ function EmailStep({ onSuccess }: { onSuccess: (email: string) => void }) {
         editable={!submitting}
         onSubmitEditing={onSubmit}
       />
-      {error ? <Text className="text-xs text-destructive">{error}</Text> : null}
+      {error ? <Text className="font-sans text-xs text-destructive">{error}</Text> : null}
       <Pressable
-        className="mt-2 flex-row items-center justify-center rounded-lg bg-primary px-4 py-3"
-        disabled={submitting || email.length === 0}
-        style={{ opacity: submitting || email.length === 0 ? 0.5 : 1 }}
+        className="mt-2 h-11 flex-row items-center justify-center gap-2 bg-primary px-4 active:bg-primary/80"
+        disabled={disabled}
+        style={{ opacity: disabled ? 0.5 : 1 }}
         onPress={onSubmit}
       >
-        {submitting ? <ActivityIndicator size="small" color="#fff" className="mr-2" /> : null}
-        <Text className="text-base font-medium text-primary-foreground">Send code</Text>
+        {submitting ? (
+          <ActivityIndicator size="small" colorClassName="accent-primary-foreground" />
+        ) : null}
+        <Text className="font-sans text-sm font-medium text-primary-foreground">
+          Continue with email
+        </Text>
       </Pressable>
     </View>
   );
@@ -106,18 +121,22 @@ function CodeStep({ email, onBack }: { email: string; onBack: () => void }) {
     }
   };
 
+  const disabled = submitting || code.length !== 8;
+
   return (
-    <View className="gap-2">
-      <Text className="text-2xl font-bold text-foreground">Verify code</Text>
-      <Text className="text-sm text-muted-foreground">Enter the 8-digit code sent to {email}.</Text>
+    <View className="gap-1.5">
+      <Text className="text-center font-heading text-xl text-foreground">
+        Enter your verification code
+      </Text>
+      <Text className="text-center font-sans text-sm text-muted-foreground">
+        We sent an 8-digit code to {email}.
+      </Text>
       <TextInput
         // Center the code via the native `textAlign` prop rather than a `text-center`
         // className, so it is set directly on the TextInput instead of going through the
         // resolved style object.
         textAlign="center"
-        className="mt-4 rounded-lg border border-border px-4 py-3 text-2xl tracking-[8px] text-foreground"
-        placeholder="00000000"
-        placeholderTextColor="#9ca3af"
+        className="mt-5 h-12 border border-input bg-background px-3 font-sans text-2xl tracking-[8px] text-foreground focus:border-foreground"
         value={code}
         onChangeText={(text) => setCode(text.replace(/\D/g, "").slice(0, 8))}
         keyboardType="number-pad"
@@ -126,25 +145,23 @@ function CodeStep({ email, onBack }: { email: string; onBack: () => void }) {
         editable={!submitting}
         onSubmitEditing={onSubmit}
       />
-      {error ? <Text className="text-xs text-destructive">{error}</Text> : null}
-      <View className="mt-2 flex-row gap-2">
-        <Pressable
-          className="flex-1 items-center justify-center rounded-lg border border-border px-4 py-3"
-          disabled={submitting}
-          onPress={onBack}
-        >
-          <Text className="text-base font-medium text-foreground">Back</Text>
-        </Pressable>
-        <Pressable
-          className="flex-1 flex-row items-center justify-center rounded-lg bg-primary px-4 py-3"
-          disabled={submitting || code.length !== 8}
-          style={{ opacity: submitting || code.length !== 8 ? 0.5 : 1 }}
-          onPress={onSubmit}
-        >
-          {submitting ? <ActivityIndicator size="small" color="#fff" className="mr-2" /> : null}
-          <Text className="text-base font-medium text-primary-foreground">Verify</Text>
-        </Pressable>
-      </View>
+      {error ? <Text className="font-sans text-xs text-destructive">{error}</Text> : null}
+      <Pressable
+        className="mt-2 h-11 flex-row items-center justify-center gap-2 bg-primary px-4 active:bg-primary/80"
+        disabled={disabled}
+        style={{ opacity: disabled ? 0.5 : 1 }}
+        onPress={onSubmit}
+      >
+        {submitting ? (
+          <ActivityIndicator size="small" colorClassName="accent-primary-foreground" />
+        ) : null}
+        <Text className="font-sans text-sm font-medium text-primary-foreground">Verify</Text>
+      </Pressable>
+      <Pressable className="mt-2 items-center" disabled={submitting} onPress={onBack} hitSlop={8}>
+        <Text className="font-sans text-sm font-medium text-muted-foreground">
+          Use a different email
+        </Text>
+      </Pressable>
     </View>
   );
 }

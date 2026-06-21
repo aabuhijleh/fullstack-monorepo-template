@@ -14,6 +14,7 @@ export type TaskBoardProps = {
   percent: number;
   onAdd: (text: string) => void;
   onToggle: (taskId: Id<"tasks">) => void;
+  onUpdate: (taskId: Id<"tasks">, text: string) => void;
   onRemove: (taskId: Id<"tasks">) => void;
   onClearCompleted: () => void;
   isAdding?: boolean;
@@ -25,6 +26,7 @@ export function useTasks(): TaskBoardProps {
   const { data: tasks } = useSuspenseQuery(convexQuery(api.tasks.list));
   const add = useMutation({ mutationFn: useConvexMutation(api.tasks.add) });
   const toggle = useMutation({ mutationFn: useConvexMutation(api.tasks.toggle) });
+  const update = useMutation({ mutationFn: useConvexMutation(api.tasks.update) });
   const remove = useMutation({ mutationFn: useConvexMutation(api.tasks.remove) });
   const clearCompleted = useMutation({ mutationFn: useConvexMutation(api.tasks.clearCompleted) });
 
@@ -41,6 +43,7 @@ export function useTasks(): TaskBoardProps {
     percent,
     onAdd: (text) => add.mutate({ text }),
     onToggle: (taskId) => toggle.mutate({ taskId }),
+    onUpdate: (taskId, text) => update.mutate({ taskId, text }),
     onRemove: (taskId) => remove.mutate({ taskId }),
     onClearCompleted: () => clearCompleted.mutate({}),
     isAdding: add.isPending,

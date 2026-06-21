@@ -1,9 +1,9 @@
 import { HeadContent, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
 import { TooltipProvider } from "@workspace/ui/components/tooltip";
 
-import { ThemeProvider } from "~/components/theme-provider";
-import { ThemedToaster } from "~/components/themed-toaster";
-import { env } from "~/env";
+import { ThemeProvider } from "~/app/components/theme-provider";
+import { ThemedToaster } from "~/app/components/themed-toaster";
+import { env } from "~/config/env";
 import { generateMetadata } from "~/lib/utils/generate-metadata";
 
 import appCss from "@workspace/ui/globals.css?url";

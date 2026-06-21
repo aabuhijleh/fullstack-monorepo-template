@@ -1,7 +1,7 @@
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 import { Authenticated, AuthLoading, Unauthenticated } from "convex/react";
 
-import { AuthenticatedLayout } from "~/components/authenticated-layout";
+import { AuthenticatedLayout } from "~/app/components/authenticated-layout";
 import { FullPageSpinner } from "~/components/full-page-spinner";
 
 export const Route = createFileRoute("/_authenticated")({

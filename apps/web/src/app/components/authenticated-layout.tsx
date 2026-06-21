@@ -3,7 +3,8 @@ import { Button } from "@workspace/ui/components/button";
 import { Loader2Icon } from "lucide-react";
 import * as React from "react";
 
-import { AppLogo } from "./app-logo";
+import { AppLogo } from "~/components/app-logo";
+
 import { ThemeToggle } from "./theme-toggle";
 
 type AuthenticatedLayoutProps = React.PropsWithChildren;

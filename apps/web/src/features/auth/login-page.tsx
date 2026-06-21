@@ -110,9 +110,6 @@ function EmailStep({ onSuccess }: { onSuccess: (email: string) => void }) {
           )}
         </form.Subscribe>
       </form>
-      <p className="mt-6 text-center text-xs text-muted-foreground">
-        No password needed — we sign you in with a one-time code.
-      </p>
     </div>
   );
 }

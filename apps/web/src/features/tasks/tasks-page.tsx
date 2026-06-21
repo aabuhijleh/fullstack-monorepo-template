@@ -5,10 +5,10 @@ import { Input } from "@workspace/ui/components/input";
 import { Separator } from "@workspace/ui/components/separator";
 import { Spinner } from "@workspace/ui/components/spinner";
 import { cn } from "@workspace/ui/lib/utils";
-import { ListTodoIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { ListTodoIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import * as React from "react";
 
-import { type TaskBoardProps, useTasks } from "~/features/tasks/use-tasks";
+import { type TaskBoardProps, useTasks } from "./use-tasks";
 
 const SUGGESTIONS = [
   "Plan the week ahead",
@@ -117,6 +117,7 @@ function TaskSections({ board }: { board: TaskBoardProps }) {
               key={task._id}
               task={task}
               onToggle={board.onToggle}
+              onUpdate={board.onUpdate}
               onRemove={board.onRemove}
             />
           ))
@@ -144,6 +145,7 @@ function TaskSections({ board }: { board: TaskBoardProps }) {
               key={task._id}
               task={task}
               onToggle={board.onToggle}
+              onUpdate={board.onUpdate}
               onRemove={board.onRemove}
             />
           ))}
@@ -180,10 +182,57 @@ function TaskSection({ label, count, action, children }: TaskSectionProps) {
 type TaskRowProps = {
   task: Doc<"tasks">;
   onToggle: (taskId: Doc<"tasks">["_id"]) => void;
+  onUpdate: (taskId: Doc<"tasks">["_id"], text: string) => void;
   onRemove: (taskId: Doc<"tasks">["_id"]) => void;
 };
 
-function TaskRow({ task, onToggle, onRemove }: TaskRowProps) {
+function TaskRow({ task, onToggle, onUpdate, onRemove }: TaskRowProps) {
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [draft, setDraft] = React.useState(task.text);
+
+  const startEditing = () => {
+    setDraft(task.text);
+    setIsEditing(true);
+  };
+
+  const commit = () => {
+    const value = draft.trim();
+    setIsEditing(false);
+    if (!value || value === task.text) return;
+    onUpdate(task._id, value);
+  };
+
+  const cancel = () => {
+    setDraft(task.text);
+    setIsEditing(false);
+  };
+
+  if (isEditing) {
+    return (
+      <div className="group flex items-center gap-3 py-2.5">
+        <Checkbox id={task._id} checked={task.isCompleted} disabled />
+        <Input
+          autoFocus
+          value={draft}
+          maxLength={50}
+          aria-label="Edit task"
+          onChange={(event) => setDraft(event.target.value)}
+          onBlur={commit}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              commit();
+            } else if (event.key === "Escape") {
+              event.preventDefault();
+              cancel();
+            }
+          }}
+          className="h-7 flex-1 rounded-none border-0 border-b border-foreground/20 bg-transparent px-0 !text-sm shadow-none transition-colors focus-visible:border-foreground focus-visible:ring-0 dark:bg-transparent"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="group flex items-center gap-3 py-2.5">
       <Checkbox
@@ -200,6 +249,15 @@ function TaskRow({ task, onToggle, onRemove }: TaskRowProps) {
       >
         {task.text}
       </label>
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        className="text-muted-foreground opacity-70 transition-[color,opacity] hover:text-foreground focus-visible:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+        onClick={startEditing}
+      >
+        <span className="sr-only">Edit task</span>
+        <PencilIcon />
+      </Button>
       <Button
         variant="ghost"
         size="icon-sm"
