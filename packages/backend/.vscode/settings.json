@@ -1,0 +1,6 @@
+{
+  // Convex generated files (backend-only) — shared settings live in the .code-workspace file
+  "files.watcherExclude": { "**/_generated/**/*": true },
+  "search.exclude": { "**/_generated/**/*": true },
+  "files.readonlyInclude": { "**/_generated/**/*": true }
+}

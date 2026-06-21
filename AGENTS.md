@@ -23,6 +23,22 @@ Skills are discovered on-demand based on where you work in each package's direct
 tool before writing code it covers. Repo-wide skills apply everywhere; package-scoped
 skills activate when you work in that package.
 
+## Agent skills
+
+Configuration the engineering skills (`to-issues`, `triage`, `to-prd`, `improve-codebase-architecture`, `diagnosing-bugs`, `tdd`, …) read before running.
+
+### Issue tracker
+
+Issues and PRDs live in this repo's GitHub Issues, managed via the `gh` CLI. External PRs are **not** a triage surface. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Canonical defaults: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Multi-context (monorepo): `CONTEXT-MAP.md` at the root indexes per-package `CONTEXT.md` files, with system-wide ADRs in `docs/adr/` and context-scoped ADRs under each `<package>/docs/adr/`. See `docs/agents/domain.md`.
+
 ## Project Conventions
 
 - Turborepo monorepo: apps in `apps/`, shared libraries in `packages/`; tasks run via `turbo`.

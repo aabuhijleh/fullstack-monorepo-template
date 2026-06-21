@@ -13,9 +13,12 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@workspace/ui/components/empty";
-import { Field } from "@workspace/ui/components/field";
+import { Field, FieldError, FieldGroup } from "@workspace/ui/components/field";
+import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
-import { ClipboardListIcon, Trash2Icon } from "lucide-react";
+import { Spinner } from "@workspace/ui/components/spinner";
+import { ClipboardListIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import * as React from "react";
 import { z } from "zod";
 
 export function TasksPage() {
@@ -29,9 +32,15 @@ type TaskListProps = {
 };
 
 function TaskList({ tasks }: TaskListProps) {
+  const taskComposerRef = React.useRef<TaskComposerRef>(null);
+
+  const handleAddTask = () => {
+    taskComposerRef.current?.focus();
+  };
+
   return (
     <div>
-      <TaskComposer />
+      <TaskComposer ref={taskComposerRef} />
 
       {tasks.length === 0 && (
         <Empty>
@@ -45,7 +54,7 @@ function TaskList({ tasks }: TaskListProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent className="flex-row justify-center gap-2">
-            <Button> Add task</Button>
+            <Button onClick={handleAddTask}> Add task</Button>
           </EmptyContent>
         </Empty>
       )}
@@ -63,8 +72,17 @@ const taskSchema = z.object({
   text: z.string().min(1),
 });
 
-function TaskComposer() {
+type TaskComposerRef = {
+  focus: () => void;
+};
+
+type TaskComposerProps = {
+  ref: React.RefObject<TaskComposerRef | null>;
+};
+
+function TaskComposer({ ref }: TaskComposerProps) {
   const addMutation = useMutation({ mutationFn: useConvexMutation(api.tasks.add) });
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const form = useForm({
     defaultValues: {
@@ -75,8 +93,15 @@ function TaskComposer() {
     },
     onSubmit: ({ value }) => {
       addMutation.mutate({ text: value.text });
+      form.reset();
     },
   });
+
+  React.useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current?.focus();
+    },
+  }));
 
   return (
     <form
@@ -86,7 +111,31 @@ function TaskComposer() {
         void form.handleSubmit();
       }}
     >
-      {/* ... */}
+      <FieldGroup className="flex-row items-center gap-2">
+        <form.Field name="text">
+          {(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={isInvalid}>
+                <Input
+                  ref={inputRef}
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  aria-invalid={isInvalid}
+                  placeholder="Implement a new feature"
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+        <Button size="icon" type="submit" disabled={addMutation.isPending}>
+          {addMutation.isPending ? <Spinner /> : <PlusIcon />}
+        </Button>
+      </FieldGroup>
     </form>
   );
 }

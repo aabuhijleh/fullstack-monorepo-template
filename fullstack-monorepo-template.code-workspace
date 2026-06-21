@@ -1,0 +1,45 @@
+{
+  "folders": [
+    { "name": "🏠 root", "path": "." },
+    { "name": "🌐 web", "path": "apps/web" },
+    { "name": "📱 mobile", "path": "apps/mobile" },
+    { "name": "🎨 ui", "path": "packages/ui" },
+    { "name": "🗄️ backend", "path": "packages/backend" },
+  ],
+  // Canonical workspace settings. Per-package .vscode/ holds only folder-relative
+  // (${workspaceFolder}) or package-unique settings — never copies of these.
+  "settings": {
+    // Editor
+    "editor.formatOnSave": true,
+    "editor.quickSuggestions": { "strings": "on" },
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.codeActionsOnSave": { "source.fixAll.oxc": "always" },
+
+    // Formatter / linter (backed by root .oxfmtrc.json / .oxlintrc.json)
+    "oxc.fmt.configPath": ".oxfmtrc.json",
+    "eslint.enable": false,
+
+    // Files & search
+    "files.readonlyInclude": { "bun.lock": true },
+    "search.exclude": {
+      "**/node_modules/**": true,
+      "**/dist/**": true,
+      "**/.claude/**": true,
+      "**/.agents/**": true,
+      "**/CLAUDE.md": true,
+    },
+    "files.watcherExclude": {
+      "**/node_modules/**": true,
+      "**/dist/**": true,
+      "**/.claude/**": true,
+      "**/.agents/**": true,
+    },
+
+    // Tailwind & TypeScript language servers (window-scoped → can't live per-folder)
+    "files.associations": { "*.css": "tailwindcss" },
+    "tailwindCSS.classFunctions": ["cn", "cva", "class", "className", "headerClassName"],
+    "tailwindCSS.experimental.configFile": "packages/ui/src/styles/globals.css",
+    "typescript.experimental.useTsgo": true,
+    "typescript.native-preview.tsdk": "node_modules/@typescript/native-preview",
+  },
+}

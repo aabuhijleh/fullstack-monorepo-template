@@ -1,0 +1,6 @@
+{
+  // Generated files (web-only) — shared settings live in the .code-workspace file
+  "files.watcherExclude": { "**/routeTree.gen.ts": true },
+  "search.exclude": { "**/routeTree.gen.ts": true },
+  "files.readonlyInclude": { "**/routeTree.gen.ts": true }
+}
