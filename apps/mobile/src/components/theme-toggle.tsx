@@ -43,7 +43,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ theme, setTheme }) => 
       accessibilityLabel={`Theme: ${theme}. Tap to change.`}
       hitSlop={6}
       onPress={() => setTheme(NEXT[theme])}
-      className="size-8 items-center justify-center border border-border bg-background active:bg-muted"
+      className="size-8 items-center justify-center border border-border bg-background active:bg-muted dark:border-input dark:bg-input/30 dark:active:bg-input/50"
     >
       <Icon size={16} colorClassName="accent-foreground" />
     </Pressable>

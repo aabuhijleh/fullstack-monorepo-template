@@ -11,7 +11,7 @@ type TaskComposerProps = {
   placeholder?: string;
 };
 
-export function TaskComposer({ onAdd, placeholder = "Add a task…" }: TaskComposerProps) {
+export function TaskComposer({ onAdd, placeholder = "Add a task" }: TaskComposerProps) {
   const form = useForm({
     defaultValues: { text: "" },
     validators: {
@@ -24,7 +24,7 @@ export function TaskComposer({ onAdd, placeholder = "Add a task…" }: TaskCompo
   });
 
   return (
-    <View className="flex-row items-center gap-3 border-b border-foreground/20 pb-2">
+    <View className="flex-row items-center gap-3 border-b border-foreground/20">
       <Plus size={20} colorClassName="accent-muted-foreground" />
       <form.Field name="text">
         {(field) => (
@@ -36,7 +36,7 @@ export function TaskComposer({ onAdd, placeholder = "Add a task…" }: TaskCompo
             onBlur={field.handleBlur}
             onSubmitEditing={() => void form.handleSubmit()}
             returnKeyType="done"
-            className="h-7 flex-1 font-sans text-base text-foreground"
+            className="h-11 flex-1 font-sans text-base tracking-normal text-foreground"
           />
         )}
       </form.Field>

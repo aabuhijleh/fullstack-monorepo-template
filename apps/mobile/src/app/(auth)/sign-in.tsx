@@ -72,7 +72,7 @@ function EmailStep({ onSuccess }: { onSuccess: (email: string) => void }) {
         We'll send you a verification code to sign in.
       </Text>
       <TextInput
-        className="mt-5 h-11 border border-input bg-background px-3 font-sans text-base text-foreground focus:border-foreground"
+        className="mt-5 h-11 border border-input bg-background px-3 font-sans text-base tracking-normal text-foreground focus:border-foreground"
         placeholder="name@example.com"
         placeholderTextColorClassName="accent-muted-foreground"
         value={email}
@@ -94,7 +94,7 @@ function EmailStep({ onSuccess }: { onSuccess: (email: string) => void }) {
         {submitting ? (
           <ActivityIndicator size="small" colorClassName="accent-primary-foreground" />
         ) : null}
-        <Text className="font-sans text-sm font-medium text-primary-foreground">
+        <Text className="font-sans-medium text-sm text-primary-foreground">
           Continue with email
         </Text>
       </Pressable>
@@ -155,10 +155,10 @@ function CodeStep({ email, onBack }: { email: string; onBack: () => void }) {
         {submitting ? (
           <ActivityIndicator size="small" colorClassName="accent-primary-foreground" />
         ) : null}
-        <Text className="font-sans text-sm font-medium text-primary-foreground">Verify</Text>
+        <Text className="font-sans-medium text-sm text-primary-foreground">Verify</Text>
       </Pressable>
       <Pressable className="mt-2 items-center" disabled={submitting} onPress={onBack} hitSlop={8}>
-        <Text className="font-sans text-sm font-medium text-muted-foreground">
+        <Text className="font-sans-medium text-sm text-muted-foreground">
           Use a different email
         </Text>
       </Pressable>

@@ -24,10 +24,10 @@ export function TaskEmptyState({ onAdd }: { onAdd: (text: string) => void }) {
           <Pressable
             key={suggestion}
             onPress={() => onAdd(suggestion)}
-            className="flex-row items-center justify-center gap-1.5 border border-border bg-background px-2.5 py-2 active:bg-muted"
+            className="flex-row items-center justify-center gap-1.5 border border-border bg-background px-2.5 py-2 active:bg-muted dark:border-input dark:bg-input/30 dark:active:bg-input/50"
           >
             <Plus size={14} colorClassName="accent-muted-foreground" />
-            <Text className="font-sans text-sm text-muted-foreground">{suggestion}</Text>
+            <Text className="font-sans-medium text-sm text-muted-foreground">{suggestion}</Text>
           </Pressable>
         ))}
       </View>

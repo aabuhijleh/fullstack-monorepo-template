@@ -132,9 +132,9 @@ function SignOutButton() {
     <Pressable
       accessibilityRole="button"
       onPress={() => void signOut()}
-      className="h-8 items-center justify-center border border-border bg-background px-3 active:bg-muted"
+      className="h-8 items-center justify-center border border-border bg-background px-3 active:bg-muted dark:border-input dark:bg-input/30 dark:active:bg-input/50"
     >
-      <Text className="font-sans text-xs font-medium text-foreground">Sign out</Text>
+      <Text className="font-sans-medium text-xs text-foreground">Sign out</Text>
     </Pressable>
   );
 }
