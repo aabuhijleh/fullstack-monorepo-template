@@ -48,6 +48,7 @@ Multi-context (monorepo): `CONTEXT-MAP.md` at the root indexes per-package `CONT
 - Prefer inferring return types over explicitly annotating them.
 - Verify with `bun check:fix` (auto-fixes lint/format) or `bun check` for a read-only pass. Don't run `tsc` — oxlint (`oxlint-tsgolint`) is type-aware and covers typechecking + linting.
 - Run tests with `bun run test` (delegates to `turbo run test`)
+- When using the `playwright-cli` skill, write all output artifacts (screenshots, PDFs, snapshots, traces, videos, storage state) into the gitignored `.playwright-cli/` folder — never the repo root. Pass `--filename=.playwright-cli/<name>` to `screenshot`/`pdf`/`snapshot` etc.
 
 ## Git Workflow Guidelines
 

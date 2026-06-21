@@ -36,5 +36,5 @@ npm-debug.log*
 # Lefthook
 lefthook-local.yml
 
-# AI Generated Files
-docs/superpowers/
+# Playwright CLI
+.playwright-cli

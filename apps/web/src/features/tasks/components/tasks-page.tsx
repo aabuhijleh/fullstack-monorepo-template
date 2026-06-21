@@ -1,173 +1,214 @@
-import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
-import { useForm } from "@tanstack/react-form";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { api } from "@workspace/backend/api";
 import { type Doc } from "@workspace/backend/dataModel";
 import { Button } from "@workspace/ui/components/button";
 import { Checkbox } from "@workspace/ui/components/checkbox";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@workspace/ui/components/empty";
-import { Field, FieldError, FieldGroup } from "@workspace/ui/components/field";
 import { Input } from "@workspace/ui/components/input";
-import { Label } from "@workspace/ui/components/label";
+import { Separator } from "@workspace/ui/components/separator";
 import { Spinner } from "@workspace/ui/components/spinner";
-import { ClipboardListIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { cn } from "@workspace/ui/lib/utils";
+import { ListTodoIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import * as React from "react";
-import { z } from "zod";
+
+import { type TaskBoardProps, useTasks } from "~/features/tasks/use-tasks";
+
+const SUGGESTIONS = [
+  "Plan the week ahead",
+  "Reply to outstanding emails",
+  "Review open pull requests",
+  "Block focus time",
+];
 
 export function TasksPage() {
-  const { data: tasks } = useSuspenseQuery(convexQuery(api.tasks.list));
-
-  return <TaskList tasks={tasks} />;
-}
-
-type TaskListProps = {
-  tasks: Array<Doc<"tasks">>;
-};
-
-function TaskList({ tasks }: TaskListProps) {
-  const taskComposerRef = React.useRef<TaskComposerRef>(null);
-
-  const handleAddTask = () => {
-    taskComposerRef.current?.focus();
-  };
+  const board = useTasks();
 
   return (
-    <div>
-      <TaskComposer ref={taskComposerRef} />
+    <section className="space-y-8">
+      <TaskComposer
+        onAdd={board.onAdd}
+        isAdding={board.isAdding}
+        placeholder={
+          board.total === 0 ? "What's the first thing on your mind?" : "Add a task and press Enter"
+        }
+      />
 
-      {tasks.length === 0 && (
-        <Empty>
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <ClipboardListIcon />
-            </EmptyMedia>
-            <EmptyTitle>No tasks yet</EmptyTitle>
-            <EmptyDescription>
-              You haven&apos;t added any tasks yet. Get started by adding your first task.
-            </EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent className="flex-row justify-center gap-2">
-            <Button onClick={handleAddTask}> Add task</Button>
-          </EmptyContent>
-        </Empty>
-      )}
-
-      <ul className="space-y-2">
-        {tasks.map((task) => (
-          <TaskItem key={task._id} task={task} />
-        ))}
-      </ul>
-    </div>
+      {board.total === 0 ? <EmptyState onAdd={board.onAdd} /> : <TaskSections board={board} />}
+    </section>
   );
 }
 
-const taskSchema = z.object({
-  text: z.string().min(1),
-});
+/** Borderless underline composer. Manages its own input state. */
+function TaskComposer({
+  onAdd,
+  isAdding,
+  placeholder,
+}: {
+  onAdd: (text: string) => void;
+  isAdding?: boolean;
+  placeholder: string;
+}) {
+  const [text, setText] = React.useState("");
 
-type TaskComposerRef = {
-  focus: () => void;
-};
-
-type TaskComposerProps = {
-  ref: React.RefObject<TaskComposerRef | null>;
-};
-
-function TaskComposer({ ref }: TaskComposerProps) {
-  const addMutation = useMutation({ mutationFn: useConvexMutation(api.tasks.add) });
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  const form = useForm({
-    defaultValues: {
-      text: "",
-    },
-    validators: {
-      onSubmit: taskSchema,
-    },
-    onSubmit: ({ value }) => {
-      addMutation.mutate({ text: value.text });
-      form.reset();
-    },
-  });
-
-  React.useImperativeHandle(ref, () => ({
-    focus: () => {
-      inputRef.current?.focus();
-    },
-  }));
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const value = text.trim();
+    if (!value) return;
+    onAdd(value);
+    setText("");
+  };
 
   return (
-    <form
-      id="task-composer-form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        void form.handleSubmit();
-      }}
-    >
-      <FieldGroup className="flex-row items-center gap-2">
-        <form.Field name="text">
-          {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
-            return (
-              <Field data-invalid={isInvalid}>
-                <Input
-                  ref={inputRef}
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  aria-invalid={isInvalid}
-                  placeholder="Implement a new feature"
-                />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            );
-          }}
-        </form.Field>
-        <Button size="icon" type="submit" disabled={addMutation.isPending}>
-          {addMutation.isPending ? <Spinner /> : <PlusIcon />}
-        </Button>
-      </FieldGroup>
+    <form onSubmit={submit} className="flex items-center gap-3">
+      <PlusIcon className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+      <Input
+        value={text}
+        onChange={(event) => setText(event.target.value)}
+        placeholder={placeholder}
+        autoComplete="off"
+        aria-label="Add a task"
+        className="h-11 flex-1 rounded-none border-0 border-b border-foreground/20 bg-transparent px-0 !text-base shadow-none transition-colors focus-visible:border-foreground focus-visible:ring-0 dark:bg-transparent"
+      />
+      {isAdding ? <Spinner className="size-4 text-muted-foreground" /> : null}
     </form>
   );
 }
 
-type TaskItemProps = {
-  task: Doc<"tasks">;
-};
+/** Onboarding empty state — quick-start suggestions seed the list in one tap. */
+function EmptyState({ onAdd }: { onAdd: (text: string) => void }) {
+  return (
+    <div className="flex flex-col items-center gap-6 py-8 text-center">
+      <div className="flex size-12 items-center justify-center bg-muted text-muted-foreground">
+        <ListTodoIcon className="size-6" aria-hidden />
+      </div>
+      <div className="space-y-1.5">
+        <h3 className="font-heading text-lg font-semibold">Your list is empty</h3>
+        <p className="mx-auto max-w-sm text-sm text-muted-foreground">
+          Add a task above, or start with one of these to get the ball rolling.
+        </p>
+      </div>
+      <div className="flex flex-wrap justify-center gap-2">
+        {SUGGESTIONS.map((suggestion) => (
+          <Button
+            key={suggestion}
+            variant="outline"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => onAdd(suggestion)}
+          >
+            <PlusIcon />
+            {suggestion}
+          </Button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-function TaskItem({ task }: TaskItemProps) {
-  const toggleMutation = useMutation({ mutationFn: useConvexMutation(api.tasks.toggle) });
-  const removeMutation = useMutation({ mutationFn: useConvexMutation(api.tasks.remove) });
+function TaskSections({ board }: { board: TaskBoardProps }) {
+  const activeTasks = board.tasks.filter((task) => !task.isCompleted);
+  const doneTasks = board.tasks.filter((task) => task.isCompleted);
 
   return (
-    <li>
-      <Field orientation="horizontal">
-        <Checkbox
-          id={task._id}
-          checked={task.isCompleted}
-          onCheckedChange={() => toggleMutation.mutate({ taskId: task._id })}
-        />
-        <Label htmlFor={task._id} className="text-base">
-          {task.text}
-        </Label>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => removeMutation.mutate({ taskId: task._id })}
+    <div className="space-y-8">
+      <TaskSection label="Active" count={board.active}>
+        {activeTasks.length === 0 ? (
+          <p className="py-3 text-sm text-muted-foreground">Inbox zero. Everything is done.</p>
+        ) : (
+          activeTasks.map((task) => (
+            <TaskRow
+              key={task._id}
+              task={task}
+              onToggle={board.onToggle}
+              onRemove={board.onRemove}
+            />
+          ))
+        )}
+      </TaskSection>
+
+      {doneTasks.length > 0 && (
+        <TaskSection
+          label="Completed"
+          count={board.completed}
+          action={
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-auto p-0 text-xs text-muted-foreground hover:text-destructive"
+              disabled={board.isClearing}
+              onClick={board.onClearCompleted}
+            >
+              Clear
+            </Button>
+          }
         >
-          <span className="sr-only">Remove task</span>
-          <Trash2Icon />
-        </Button>
-      </Field>
-    </li>
+          {doneTasks.map((task) => (
+            <TaskRow
+              key={task._id}
+              task={task}
+              onToggle={board.onToggle}
+              onRemove={board.onRemove}
+            />
+          ))}
+        </TaskSection>
+      )}
+    </div>
+  );
+}
+
+type TaskSectionProps = React.PropsWithChildren<{
+  label: string;
+  count: number;
+  action?: React.ReactNode;
+}>;
+
+function TaskSection({ label, count, action, children }: TaskSectionProps) {
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center justify-between gap-2 pb-1">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-medium tracking-[0.2em] text-muted-foreground uppercase">
+            {label}
+          </span>
+          <span className="text-xs text-muted-foreground tabular-nums">{count}</span>
+        </div>
+        {action}
+      </div>
+      <Separator />
+      <div>{children}</div>
+    </div>
+  );
+}
+
+type TaskRowProps = {
+  task: Doc<"tasks">;
+  onToggle: (taskId: Doc<"tasks">["_id"]) => void;
+  onRemove: (taskId: Doc<"tasks">["_id"]) => void;
+};
+
+function TaskRow({ task, onToggle, onRemove }: TaskRowProps) {
+  return (
+    <div className="group flex items-center gap-3 py-2.5">
+      <Checkbox
+        id={task._id}
+        checked={task.isCompleted}
+        onCheckedChange={() => onToggle(task._id)}
+      />
+      <label
+        htmlFor={task._id}
+        className={cn(
+          "flex-1 cursor-pointer text-sm transition-colors",
+          task.isCompleted && "text-muted-foreground line-through",
+        )}
+      >
+        {task.text}
+      </label>
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        className="text-muted-foreground opacity-70 transition-[color,opacity] hover:text-destructive focus-visible:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+        onClick={() => onRemove(task._id)}
+      >
+        <span className="sr-only">Remove task</span>
+        <Trash2Icon />
+      </Button>
+    </div>
   );
 }
