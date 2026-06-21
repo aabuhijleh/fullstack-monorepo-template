@@ -49,7 +49,7 @@ export function TaskRow({ task, onToggle, onUpdate, onRemove }: Props) {
         onPress={onToggle}
         disabled={!task.taskId || task.isPending}
         className={`size-5 items-center justify-center border ${
-          task.isCompleted ? "border-primary bg-primary" : "border-input"
+          task.isCompleted ? "border-primary bg-primary" : "border-input dark:bg-input/30"
         }`}
       >
         {task.isCompleted ? <Check size={14} colorClassName="accent-primary-foreground" /> : null}
