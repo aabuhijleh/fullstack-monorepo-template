@@ -58,6 +58,20 @@ wait_all() {
   _job_names=()
 }
 
+# ---------- argument parsing ----------
+# --no-prebuild (or SKIP_PREBUILD=1) defers the iOS native prebuild to the
+# first `bun dev`. Default: prebuild runs as part of setup.
+NO_PREBUILD=0
+if [[ -n "${SKIP_PREBUILD:-}" ]]; then
+  NO_PREBUILD=1
+fi
+for arg in "$@"; do
+  case "$arg" in
+    --no-prebuild) NO_PREBUILD=1 ;;
+    *) warn "unknown argument: $arg (ignoring)" ;;
+  esac
+done
+
 # ---------- preflight: run from the repo root ----------
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
 if [[ -z "$repo_root" || ! -d "$repo_root/apps/web" || ! -d "$repo_root/apps/mobile" ]]; then
@@ -162,21 +176,42 @@ step_brew_rn() {
   brew_install_if_missing pod cocoapods
 }
 
-# Convex: one sync to provision the local deployment + run codegen, so
-# `bun dev` doesn't block on first-time setup. Needs bun deps installed first.
+# Convex: provision the anonymous local deployment AND the Convex Auth signing
+# keys non-interactively, so `bun dev` doesn't block on first-time setup.
+#
+# The project declares required env vars (JWKS, JWT_PRIVATE_KEY, SITE_URL) that
+# Convex validates at deploy time, so a single `convex dev --once` fails on a
+# fresh project. The sequence below works around that:
+#   1. `convex dev --once </dev/null` — provisions the anonymous LOCAL
+#      deployment and writes .env.local. `</dev/null` forces the no-login
+#      anonymous path even when a human runs setup.sh in a terminal. This first
+#      push FAILS on MissingEnvironmentVariables — expected and harmless.
+#   2. setup-auth-env.ts — generates + sets JWKS/JWT_PRIVATE_KEY/SITE_URL on the
+#      now-existing deployment (idempotent).
+#   3. `convex dev --once </dev/null` — the real push; now succeeds.
+# Needs bun deps installed first.
 step_convex() {
   if ! has bun; then
     warn "bun unavailable — skipping Convex provisioning. Later: 'cd packages/backend && bunx convex dev --once'"
     return
   fi
-  log "Provisioning Convex (codegen + local deployment)"
-  (cd packages/backend && bunx convex dev --once) \
-    || warn "'convex dev --once' failed — run 'cd packages/backend && bunx convex dev' once interactively, then re-run setup"
+  log "Provisioning Convex (local anonymous deployment + auth keys)"
+  (
+    cd packages/backend
+    bunx convex dev --once </dev/null || true
+    bun scripts/setup-auth-env.ts
+    bunx convex dev --once </dev/null
+  ) \
+    || warn "Convex provisioning failed — run 'cd packages/backend && bunx convex dev' once interactively, then re-run setup"
 }
 
 # iOS: generate the native project (ios/ + android/ are gitignored) and install
 # CocoaPods. The Xcode compile itself happens on the first 'expo run:ios'/'bun dev'.
 step_prebuild() {
+  if [[ "$NO_PREBUILD" -eq 1 ]]; then
+    log "Skipping iOS prebuild (deferred to first \`bun dev\`)"
+    return
+  fi
   if ! has bun; then
     warn "bun unavailable — skipping iOS prebuild. Later: 'cd apps/mobile && bunx expo prebuild'"
     return

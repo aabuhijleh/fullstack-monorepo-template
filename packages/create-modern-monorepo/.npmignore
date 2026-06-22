@@ -1,0 +1,10 @@
+# The presence of this file makes `npm pack` ignore .gitignore, so the
+# generated `template/` snapshot SHIPS. The `files` allowlist in package.json
+# already scopes the tarball to `src` + `template`; this file just makes sure
+# the build-time/dev-only bits never sneak in.
+#
+# Do NOT add exclude patterns here. They are NOT anchored, so a bare pattern
+# like `scripts/` or `tsconfig.json` would also strip those paths from inside
+# `template/` (e.g. template/packages/backend/scripts/setup-auth-env.ts), which
+# would ship a broken scaffold. The `files` allowlist in package.json already
+# excludes the scaffolder's own scripts/, tsconfig.json, and tests from the tarball.

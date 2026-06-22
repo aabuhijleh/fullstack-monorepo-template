@@ -5,6 +5,7 @@
     { "name": "📱 mobile", "path": "apps/mobile" },
     { "name": "🎨 ui", "path": "packages/ui" },
     { "name": "🗄️ backend", "path": "packages/backend" },
+    { "name": "💻 create-modern-monorepo", "path": "packages/create-modern-monorepo" },
   ],
   // Canonical workspace settings. Per-package .vscode/ holds only folder-relative
   // (${workspaceFolder}) or package-unique settings — never copies of these.
