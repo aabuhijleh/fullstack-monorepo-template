@@ -25,6 +25,7 @@
     "typescript/consistent-type-imports": ["error", { "fixStyle": "inline-type-imports" }],
     "import/consistent-type-specifier-style": ["error", "prefer-inline"],
     "import/no-unassigned-import": "off",
+    "no-await-in-loop": "off",
     "no-underscore-dangle": ["warn", { "allow": ["_id", "_creationTime"] }],
     "no-restricted-imports": [
       "error",

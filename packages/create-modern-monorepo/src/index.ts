@@ -9,6 +9,7 @@ import { cancel, intro, isCancel, log as clackLog, outro, spinner, text } from "
 
 import { copyTemplate } from "./copy.ts";
 import { deriveIdentity, validateSlug } from "./derive.ts";
+import { isErrnoException } from "./fs-helpers.ts";
 import { rewriteProject } from "./rewrite.ts";
 
 async function main() {
@@ -141,7 +142,7 @@ async function isNonEmptyDir(dir: string) {
     const entries = await readdir(dir);
     return entries.length > 0;
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
+    if (isErrnoException(error) && error.code === "ENOENT") return false;
     throw error;
   }
 }

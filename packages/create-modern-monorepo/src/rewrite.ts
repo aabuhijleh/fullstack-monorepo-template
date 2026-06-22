@@ -2,6 +2,7 @@ import { lstat, readdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { type ProjectIdentity } from "./derive.ts";
+import { isErrnoException } from "./fs-helpers.ts";
 
 /** The three DISTINCTIVE source tokens that are safe for broad text replacement.
  *  The generic word "mobile" is deliberately NOT here — it appears everywhere
@@ -109,11 +110,11 @@ async function rewriteAppJson(targetDir: string, id: ProjectIdentity) {
   try {
     raw = await readFile(appJsonPath, "utf8");
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") return;
+    if (isErrnoException(error) && error.code === "ENOENT") return;
     throw error;
   }
 
-  const parsed = JSON.parse(raw) as {
+  const parsed: {
     expo?: {
       name?: string;
       slug?: string;
@@ -121,7 +122,7 @@ async function rewriteAppJson(targetDir: string, id: ProjectIdentity) {
       ios?: { bundleIdentifier?: string };
       android?: { package?: string };
     };
-  };
+  } = JSON.parse(raw);
 
   const expo = (parsed.expo ??= {});
   expo.name = id.displayName;
@@ -141,7 +142,7 @@ async function renameWorkspaceFile(targetDir: string, id: ProjectIdentity) {
   try {
     await lstat(from);
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") return;
+    if (isErrnoException(error) && error.code === "ENOENT") return;
     throw error;
   }
   await rename(from, to);

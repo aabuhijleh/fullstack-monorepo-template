@@ -1,6 +1,8 @@
 import { copyFile, lstat, mkdir, readdir, readlink, symlink } from "node:fs/promises";
 import path from "node:path";
 
+import { isErrnoException } from "./fs-helpers.ts";
+
 /** Recursively copy `templateDir` into `targetDir`.
  *
  * Behaviour mandated by the scaffolder:
@@ -24,7 +26,7 @@ async function assertEmptyOrMissing(dir: string) {
   try {
     entries = await readdir(dir);
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") return;
+    if (isErrnoException(error) && error.code === "ENOENT") return;
     throw error;
   }
   if (entries.length > 0) {
